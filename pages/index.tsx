@@ -10,7 +10,7 @@ import { initialData } from '../database/products';
 const HomePage: NextPage = () => {
   return (
     <ShopLayout
-      title={'Teslo-Shop-Elis | Home'}
+      title={'TesloShop Elis | Home'}
       pageDescription={'Find the best Teslo products here'}
     >
       <Typography variant='h1' component='h1'>
