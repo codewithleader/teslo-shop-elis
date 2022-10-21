@@ -39,11 +39,12 @@ const productSchema = new Schema(
       },
     },
   },
-  { timestamps: true },
+  { timestamps: true }
   // { collection: 'products' } // Custom collection name (new Schema no acepta mas de 2 argumentos) 😎
 );
 
-// TODO: Create index.
+// ?: Create index for search
+productSchema.index({ title: 'text', tags: 'text' });
 
 const ProductModel: Model<IProduct> =
   mongoose.models.Product || mongoose.model('Product', productSchema); // Utiliza el modelo existente or crea uno.
