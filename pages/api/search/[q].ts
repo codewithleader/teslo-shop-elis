@@ -26,15 +26,15 @@ const getProductsBySearch = async (req: NextApiRequest, res: NextApiResponse<Dat
     return res.status(400).json({ message: 'You must specify the search term' });
   }
 
-  q.toString().toLowerCase();
+  q = q.toString().toLowerCase();
 
   await db.connect();
 
   const products = await ProductModel.find({
     $text: { $search: q },
   })
-  .select('title images price inStock slug -_id')
-  .lean();
+    .select('title images price inStock slug -_id')
+    .lean();
 
   await db.disconnect();
 
