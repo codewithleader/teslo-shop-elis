@@ -49,6 +49,7 @@ productSchema.index({ title: 'text', tags: 'text' });
 const ProductModel: Model<IProduct> =
   mongoose.models.Product || mongoose.model('Product', productSchema); // Utiliza el modelo existente or crea uno.
 
+  // Configuración para extraer variables al usar el metodo toJSON. Cada vez que se usa el methodo toJSON (res.status(200).json({...})) Se aplican estos cambios:
 // productSchema.method('toJSON', function () {
 //   const { __v, _id, ...object } = this.toObject();
 //   object.id = _id;
