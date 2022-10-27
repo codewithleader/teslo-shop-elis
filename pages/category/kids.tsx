@@ -8,13 +8,13 @@ import { FullScreenLoading } from '../../components/ui';
 
 import { useProducts } from '../../hooks';
 
-const KidPage: NextPage = () => {
+const KidsPage: NextPage = () => {
   const { isError, isLoading, products } = useProducts('/products?gender=kid');
 
   return (
     <ShopLayout
-      title={'TesloShop Elis | Kid'}
-      pageDescription={'Find the best Teslo products for Kid'}
+      title={'TesloShop Elis | Kids'}
+      pageDescription={'Find the best Teslo products for Kids'}
     >
       <Typography variant='h1' component='h1'>
         Kids
@@ -28,4 +28,4 @@ const KidPage: NextPage = () => {
   );
 };
 
-export default KidPage;
+export default KidsPage;
