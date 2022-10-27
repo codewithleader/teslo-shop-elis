@@ -12,7 +12,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const productImage = useMemo(() => {
-    return isHovered ? `products/${product.images[1]}` : `products/${product.images[0]}`;
+    // todo: Aquí es donde está el problema. La imagen la está buscando en {{url}}/category/products/img.jpg y acá la está sirviendo en {{url}}/products/img.jpg
+    // ?: SOLUCION: Agregar el "/" antes de "products/" para indicar que se base en la raíz
+    return isHovered ? `/products/${product.images[1]}` : `/products/${product.images[0]}`;
   }, [isHovered, product.images]);
 
   return (

@@ -4,8 +4,9 @@ import { Typography } from '@mui/material';
 
 import { ShopLayout } from '../components/layouts';
 import { ProductList } from '../components/products';
-import { useProducts } from '../hooks';
 import { FullScreenLoading } from '../components/ui';
+
+import { useProducts } from '../hooks';
 
 const HomePage: NextPage = () => {
   const { isError, isLoading, products } = useProducts('/products');
