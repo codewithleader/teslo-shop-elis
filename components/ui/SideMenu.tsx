@@ -1,3 +1,7 @@
+import { useContext } from 'react';
+
+import { useRouter } from 'next/router';
+
 import {
   Box,
   Divider,
@@ -24,19 +28,31 @@ import {
   VpnKeyOutlined,
 } from '@mui/icons-material';
 
+import { UiContext } from '../../context';
+
 export const SideMenu = () => {
+  const router = useRouter()
+
+  const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
+
+  const navigateTo = (url: string) => {
+    toggleSideMenu();
+    router.push(url)
+  };
+
   return (
     <Drawer
-      open={false}
+      open={isMenuOpen}
       anchor='right'
       sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
+      onClose={toggleSideMenu}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
           <ListItem>
             <Input
               type='text'
-              placeholder='Buscar...'
+              placeholder='Search...'
               endAdornment={
                 <InputAdornment position='end'>
                   <IconButton aria-label='toggle password visibility'>
@@ -51,49 +67,61 @@ export const SideMenu = () => {
             <ListItemIcon>
               <AccountCircleOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Perfil'} />
+            <ListItemText primary={'Profile'} />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Mis Ordenes'} />
+            <ListItemText primary={'My Orders'} />
           </ListItem>
 
-          <ListItem button sx={{ display: { xs: '', sm: 'none' } }}>
+          <ListItem
+            button
+            sx={{ display: { xs: '', sm: 'none' } }}
+            onClick={() => navigateTo('/category/men')}
+          >
             <ListItemIcon>
               <MaleOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Hombres'} />
+            <ListItemText primary={'Men'} />
           </ListItem>
 
-          <ListItem button sx={{ display: { xs: '', sm: 'none' } }}>
+          <ListItem
+            button
+            sx={{ display: { xs: '', sm: 'none' } }}
+            onClick={() => navigateTo('/category/women')}
+          >
             <ListItemIcon>
               <FemaleOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Mujeres'} />
+            <ListItemText primary={'Women'} />
           </ListItem>
 
-          <ListItem button sx={{ display: { xs: '', sm: 'none' } }}>
+          <ListItem
+            button
+            sx={{ display: { xs: '', sm: 'none' } }}
+            onClick={() => navigateTo('/category/kids')}
+          >
             <ListItemIcon>
               <EscalatorWarningOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Niños'} />
+            <ListItemText primary={'Kids'} />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
               <VpnKeyOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Ingresar'} />
+            <ListItemText primary={'Login'} />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
               <LoginOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Salir'} />
+            <ListItemText primary={'Logout'} />
           </ListItem>
 
           {/* Admin */}
@@ -104,20 +132,20 @@ export const SideMenu = () => {
             <ListItemIcon>
               <CategoryOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Productos'} />
+            <ListItemText primary={'Products'} />
           </ListItem>
           <ListItem button>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
-            <ListItemText primary={'Ordenes'} />
+            <ListItemText primary={'Orders'} />
           </ListItem>
 
           <ListItem button>
             <ListItemIcon>
               <AdminPanelSettings />
             </ListItemIcon>
-            <ListItemText primary={'Usuarios'} />
+            <ListItemText primary={'Users'} />
           </ListItem>
         </List>
       </Box>
