@@ -13,3 +13,12 @@ export const useProducts = (url: string, config: SWRConfiguration = {}) => {
     isError: error,
   };
 };
+
+
+/** Endpoints like this:
+ *  {{url}}/api/products
+ *  {{url}}/api/products/[slug]
+ *  {{url}}/api/products?gender=kids
+ *  {{url}}/api/products?gender=women
+ *  {{url}}/api/products?gender=men
+*/

@@ -1,13 +1,24 @@
+import { NextPage, GetServerSideProps } from 'next';
+
 import { Button, Chip, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { ShopLayout } from '../../components/layouts';
+
 import { ProductSlideshow, SizeSelector } from '../../components/products';
+import { ShopLayout } from '../../components/layouts';
 import { ItemCounter } from '../../components/ui';
-import { initialData } from '../../database/products';
+import { IProduct } from '../../interfaces';
+import { dbProducts } from '../../database';
 
-const product = initialData.products[1];
+interface Props {
+  product: IProduct;
+}
 
-export const ProductPage = () => {
+export const ProductPage: NextPage<Props> = ({ product }) => {
+  // Se comentó esto porque no se va a usar asi. Sino con SSR.
+  // const router = useRouter();
+  // console.log(router);
+  // const { products: product, isLoading } = useProducts(`/products/${router.query.slug}`);
+
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <Grid container spacing={3}>
@@ -52,6 +63,31 @@ export const ProductPage = () => {
       </Grid>
     </ShopLayout>
   );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { slug = '' } = params as { slug: string };
+
+  const product = await dbProducts.getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false, // False: Permite la posibilidad de volver a buscar el mismo slug.
+      }
+    }
+  }
+
+  return {
+    props: {
+      product,
+    },
+  };
 };
 
 export default ProductPage;
