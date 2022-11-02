@@ -1,3 +1,5 @@
+# ACTUALIZACIÓN: La Solución es verificar que cada "db.connect()" tenga su "await" 🤦🏻
+
 elis@perezmusic ~/Dev/NextJS/05-teslo-shop-elis (main) $ yarn build
 yarn run v1.22.19
 $ next build

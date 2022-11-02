@@ -3,11 +3,11 @@ import { ProductModel } from '../models';
 import { db } from './';
 
 export const getProductBySlug = async (slug: string): Promise<IProduct | null> => {
-  db.connect();
+  await db.connect();
 
   const product = await ProductModel.findOne({ slug }).lean();
 
-  db.disconnect();
+  await db.disconnect();
 
   if (!product) {
     return null;
