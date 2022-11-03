@@ -52,6 +52,7 @@ export const SideMenu = () => {
     <Drawer
       open={isMenuOpen}
       anchor='right'
+      // Para darle el desvanecido al fondo:
       sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
       onClose={toggleSideMenu}
     >

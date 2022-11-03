@@ -46,3 +46,14 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
 
   return products;
 };
+
+export const getAllProducts = async (): Promise<IProduct[]> => {
+  await db.connect();
+
+  const products = await ProductModel.find().lean();
+
+  await db.disconnect();
+
+  /* Converting the Mongoose document to a plain JavaScript object. (Serialized) */
+  return JSON.parse(JSON.stringify(products));
+};
