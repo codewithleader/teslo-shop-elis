@@ -2,18 +2,30 @@ import { useContext, useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
-import {
-  AppBar,
-  Badge,
-  Box,
-  Button,
-  IconButton,
-  Input,
-  InputAdornment,
-  Link,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+// import {
+//   AppBar,
+//   Badge,
+//   Box,
+//   Button,
+//   IconButton,
+//   Input,
+//   InputAdornment,
+//   Link,
+//   Toolbar,
+//   Typography,
+// } from '@mui/material'; // No usar asi porque es mas lento en dev.
+
+import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import Link from '@mui/material/Link';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -88,13 +100,23 @@ export const Navbar = () => {
             }
           />
         ) : (
-          <IconButton sx={{ display: { xs: 'none', sm: 'flex' } }} className='fadeIn' onClick={() => setIsSearchVisible(true)}>
+          <IconButton
+            sx={{ display: { xs: 'none', sm: 'flex' } }}
+            className='fadeIn'
+            onClick={() => setIsSearchVisible(true)}
+          >
             <SearchOutlinedIcon />
           </IconButton>
         )}
 
         {/* Search Icon SMALL Screen */}
-        <IconButton sx={{ display: { xs: 'flex', sm: 'none' } }} onClick={() => {toggleSideMenu(); setIsSearchVisible(false);}}>
+        <IconButton
+          sx={{ display: { xs: 'flex', sm: 'none' } }}
+          onClick={() => {
+            toggleSideMenu();
+            setIsSearchVisible(false);
+          }}
+        >
           <SearchOutlinedIcon />
         </IconButton>
 
@@ -109,7 +131,14 @@ export const Navbar = () => {
           </Link>
         </NextLink>
 
-        <Button onClick={() => {toggleSideMenu(); setIsSearchVisible(false);}}>Menu</Button>
+        <Button
+          onClick={() => {
+            toggleSideMenu();
+            setIsSearchVisible(false);
+          }}
+        >
+          Menu
+        </Button>
       </Toolbar>
     </AppBar>
   );

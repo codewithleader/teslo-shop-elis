@@ -1,6 +1,17 @@
 import NextLink from 'next/link';
-import { Chip, Grid, Link, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
+
+// import { Chip, Grid, Link, Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from '@mui/x-data-grid';
 
 import { ShopLayout } from '../../components/layouts';
 
@@ -28,9 +39,7 @@ const columns: GridColDef[] = [
     renderCell: (params: GridRenderCellParams) => {
       return (
         <NextLink href={`/orders/${params.row.id}`} passHref>
-          <Link underline='always'>
-            Show order
-          </Link>
+          <Link underline='always'>Show order</Link>
         </NextLink>
       );
     },

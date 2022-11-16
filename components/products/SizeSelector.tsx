@@ -1,4 +1,7 @@
-import { Box, Button } from '@mui/material';
+// import { Box, Button } from '@mui/material'; // No usar así porque es lento en dev.
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+
 import { ISize } from '../../interfaces';
 
 interface Props {

@@ -2,19 +2,31 @@ import { useContext, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import {
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  Input,
-  InputAdornment,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
-} from '@mui/material';
+// import {
+//   Box,
+//   Divider,
+//   Drawer,
+//   IconButton,
+//   Input,
+//   InputAdornment,
+//   List,
+//   ListItem,
+//   ListItemIcon,
+//   ListItemText,
+//   ListSubheader,
+// } from '@mui/material'; // No usar asi porque es mas lento en dev.
+
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
 
 // Icons
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
@@ -24,7 +36,7 @@ import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumb
 import EscalatorWarningOutlinedIcon from '@mui/icons-material/EscalatorWarningOutlined';
 import FemaleOutlinedIcon from '@mui/icons-material/FemaleOutlined';
 import MaleOutlinedIcon from '@mui/icons-material/MaleOutlined';
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 
@@ -132,7 +144,7 @@ export const SideMenu = () => {
 
           <ListItem button>
             <ListItemIcon>
-              <LoginOutlinedIcon />
+              <LogoutOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={'Logout'} />
           </ListItem>

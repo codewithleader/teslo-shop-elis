@@ -1,5 +1,14 @@
 import NextLink from 'next/link';
-import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '@mui/material';
+
+// import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '@mui/material'; // No usar asi porque es lento en dev.
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardMedia from '@mui/material/CardMedia';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+
 import { initialData } from '../../database/products';
 import { ItemCounter } from '../ui';
 

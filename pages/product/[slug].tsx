@@ -5,13 +5,19 @@ import {
   GetStaticProps,
 } from 'next';
 
-import { Button, Box, Chip, Grid, Typography } from '@mui/material';
+// import { Button, Box, Chip, Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import Chip from '@mui/material/Chip'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 
 import { ProductSlideshow, SizeSelector } from '../../components/products';
 import { ShopLayout } from '../../components/layouts';
 import { ItemCounter } from '../../components/ui';
-import { IProduct } from '../../interfaces';
+import { ICartProduct, IProduct } from '../../interfaces';
 import { dbProducts } from '../../database';
+import { useState } from 'react';
 
 interface Props {
   product: IProduct;
@@ -22,6 +28,8 @@ export const ProductPage: NextPage<Props> = ({ product }) => {
   // const router = useRouter();
   // console.log(router);
   // const { products: product, isLoading } = useProducts(`/products/${router.query.slug}`);
+
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>();
 
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
@@ -50,12 +58,14 @@ export const ProductPage: NextPage<Props> = ({ product }) => {
               />
             </Box>
 
-            {/* Add to Cart */}
-            <Button color='secondary' className='circular-btn'>
-              Add to Cart
-            </Button>
-
-            {/* <Chip label={'Unavailable'} color='error' variant='outlined' /> */}
+            {/* Add to Cart or Out Of Stock */}
+            {product.inStock > 0 ? (
+              <Button color='secondary' className='circular-btn'>
+                Add to Cart
+              </Button>
+            ) : (
+              <Chip label={'Out Of Stock'} color='error' variant='outlined' />
+            )}
 
             {/* Description */}
             <Box sx={{ mt: 3 }}>

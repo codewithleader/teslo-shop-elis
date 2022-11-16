@@ -1,4 +1,8 @@
-import { Grid, IconButton, Typography } from '@mui/material';
+// import { Grid, IconButton, Typography } from '@mui/material'; // No usar asi porque es lento en dev.
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 export const OrderSummary = () => {

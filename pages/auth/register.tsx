@@ -1,5 +1,14 @@
 import NextLink from 'next/link';
-import { Box, Button, Divider, Grid, Link, TextField, Typography } from '@mui/material';
+// import { Box, Button, Divider, Grid, Link, TextField, Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+// import Divider from '@mui/material/Divider';
+
 import { AuthLayout } from '../../components/layouts';
 
 export const RegisterPage = () => {

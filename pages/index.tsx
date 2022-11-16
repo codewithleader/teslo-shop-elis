@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 
-import { Typography } from '@mui/material';
+// import { Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
+import Typography from '@mui/material/Typography';
 
 import { ShopLayout } from '../components/layouts';
 import { ProductList } from '../components/products';

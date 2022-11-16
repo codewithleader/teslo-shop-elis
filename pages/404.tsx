@@ -1,4 +1,7 @@
-import { Box, Typography } from '@mui/material';
+// import { Box, Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
 import { ShopLayout } from '../components/layouts';
 
 export const Custom404 = () => {

@@ -1,15 +1,27 @@
 import NextLink from 'next/link';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Grid,
-  Link,
-  Typography,
-} from '@mui/material';
+
+// import {
+//   Box,
+//   Button,
+//   Card,
+//   CardContent,
+//   Chip,
+//   Divider,
+//   Grid,
+//   Link,
+//   Typography,
+// } from '@mui/material'; // No usar asi porque es mas lento en dev.
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+
 import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined';
 import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
 
