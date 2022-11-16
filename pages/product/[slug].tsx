@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   NextPage,
   // GetServerSideProps, // No se usará para este caso pero se deja para referencia.
@@ -5,19 +6,20 @@ import {
   GetStaticProps,
 } from 'next';
 
-// import { Button, Box, Chip, Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
-import Chip from '@mui/material/Chip'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+// import { Button, Box, Chip, Grid, Typography } from '@mui/material'; // No usar asi porque es lento en dev.
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 import { ProductSlideshow, SizeSelector } from '../../components/products';
 import { ShopLayout } from '../../components/layouts';
 import { ItemCounter } from '../../components/ui';
-import { ICartProduct, IProduct } from '../../interfaces';
+
 import { dbProducts } from '../../database';
-import { useState } from 'react';
+
+import { ICartProduct, IProduct, ISize } from '../../interfaces';
 
 interface Props {
   product: IProduct;
@@ -29,7 +31,24 @@ export const ProductPage: NextPage<Props> = ({ product }) => {
   // console.log(router);
   // const { products: product, isLoading } = useProducts(`/products/${router.query.slug}`);
 
-  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>();
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    _id: product._id,
+    image: product.images[0],
+    price: product.price,
+    size: undefined,
+    slug: product.slug,
+    title: product.title,
+    gender: product.gender,
+    quantity: 1,
+  });
+
+  const onSelectedSize = (size: ISize) => {
+    // console.log('From Father:', size);
+    setTempCartProduct(currentProduct => ({
+      ...currentProduct,
+      size,
+    }));
+  };
 
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
@@ -55,13 +74,16 @@ export const ProductPage: NextPage<Props> = ({ product }) => {
               <SizeSelector
                 // selectedSize={product.sizes[0]}
                 sizes={product.sizes}
+                selectedSize={tempCartProduct.size}
+                // onSelectedSize={size => onSelectedSize(size)}
+                onSelectedSize={onSelectedSize}
               />
             </Box>
 
             {/* Add to Cart or Out Of Stock */}
             {product.inStock > 0 ? (
               <Button color='secondary' className='circular-btn'>
-                Add to Cart
+                {tempCartProduct.size ? 'Add to Cart' : 'Select a size'}
               </Button>
             ) : (
               <Chip label={'Out Of Stock'} color='error' variant='outlined' />
