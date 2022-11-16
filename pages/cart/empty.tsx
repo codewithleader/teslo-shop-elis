@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { RemoveShoppingCartOutlined } from '@mui/icons-material';
+import RemoveShoppingCartOutlinedIcon from '@mui/icons-material/RemoveShoppingCartOutlined';
 import { Box, Link, Typography } from '@mui/material';
 import { ShopLayout } from '../../components/layouts';
 
@@ -13,7 +13,7 @@ export const EmptyPage = () => {
         height='calc(100vh - 200px)'
         sx={{ flexDirection: { xs: 'column', sm: 'row' } }}
       >
-        <RemoveShoppingCartOutlined sx={{fontSize: 100}} />
+        <RemoveShoppingCartOutlinedIcon sx={{fontSize: 100}} />
         <Box display='flex' flexDirection='column' alignItems='center'>
           <Typography marginLeft={2}>Your cart is empty</Typography>
 

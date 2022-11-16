@@ -10,7 +10,8 @@ import {
   Link,
   Typography,
 } from '@mui/material';
-import { CreditCardOffOutlined, CreditScoreOutlined } from '@mui/icons-material';
+import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined';
+import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
 
 import { ShopLayout } from '../../components/layouts';
 import { CartList, OrderSummary } from '../../components/cart';
@@ -27,7 +28,7 @@ export const OrderPage = () => {
         label='Pending payment'
         variant='outlined'
         color='error'
-        icon={<CreditCardOffOutlined />}
+        icon={<CreditCardOffOutlinedIcon />}
       /> */}
 
       <Chip
@@ -35,7 +36,7 @@ export const OrderPage = () => {
         label='order has already been paid'
         variant='outlined'
         color='success'
-        icon={<CreditScoreOutlined />}
+        icon={<CreditScoreOutlinedIcon />}
       />
 
       <Grid container sx={{ p: 1 }}>
@@ -82,7 +83,7 @@ export const OrderPage = () => {
                   label='order has already been paid'
                   variant='outlined'
                   color='success'
-                  icon={<CreditScoreOutlined />}
+                  icon={<CreditScoreOutlinedIcon />}
                 />
               </Box>
             </CardContent>

@@ -14,7 +14,9 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import { UiContext } from '../../context';
 
@@ -80,20 +82,20 @@ export const Navbar = () => {
             endAdornment={
               <InputAdornment position='end'>
                 <IconButton onClick={() => setIsSearchVisible(false)}>
-                  <ClearOutlined />
+                  <ClearOutlinedIcon />
                 </IconButton>
               </InputAdornment>
             }
           />
         ) : (
           <IconButton sx={{ display: { xs: 'none', sm: 'flex' } }} className='fadeIn' onClick={() => setIsSearchVisible(true)}>
-            <SearchOutlined />
+            <SearchOutlinedIcon />
           </IconButton>
         )}
 
         {/* Search Icon SMALL Screen */}
         <IconButton sx={{ display: { xs: 'flex', sm: 'none' } }} onClick={() => {toggleSideMenu(); setIsSearchVisible(false);}}>
-          <SearchOutlined />
+          <SearchOutlinedIcon />
         </IconButton>
 
         {/* Cart Icon */}
@@ -101,7 +103,7 @@ export const Navbar = () => {
           <Link>
             <IconButton>
               <Badge badgeContent={2} color='secondary'>
-                <ShoppingCartOutlined />
+                <ShoppingCartOutlinedIcon />
               </Badge>
             </IconButton>
           </Link>
