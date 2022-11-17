@@ -99,13 +99,13 @@ export const ProductPage: NextPage<Props> = ({ product }) => {
               />
             </Box>
 
-            {/* Add to Cart or Out Of Stock */}
+            {/* Add to Cart or Sold Out */}
             {product.inStock > 0 ? (
               <Button color='secondary' className='circular-btn' onClick={onAddProduct}>
                 {tempCartProduct.size ? 'Add to Cart' : 'Select a size'}
               </Button>
             ) : (
-              <Chip label={'Out Of Stock'} color='error' variant='outlined' />
+              <Chip label={'Sold Out'} color='error' variant='outlined' />
             )}
 
             {/* Description */}

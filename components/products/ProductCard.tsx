@@ -39,11 +39,11 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         <NextLink href={`/product/${product.slug}`} passHref prefetch={false}>
           <Link>
             <CardActionArea>
-              {/* Out Of Stock */}
+              {/* Sold Out */}
               {product.inStock === 0 && (
                 <Chip
                   color='primary'
-                  label='Out Of Stock'
+                  label='Sold Out'
                   sx={{ position: 'absolute', zIndex: 99, top: '10px', left: '10px' }}
                 />
               )}
