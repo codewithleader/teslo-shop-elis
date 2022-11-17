@@ -11,3 +11,41 @@ export const newInStock = {
     },
   ],
 };
+
+export const opcionJaime = [
+  {
+    inStock: true,
+  },
+  {
+    sizes: [
+      {
+        size: 'XS',
+        quantity: 14,
+      },
+      {
+        size: 'S',
+        quantity: 32,
+      },
+      {
+        size: 'M',
+        quantity: 1,
+      },
+      {
+        size: 'L',
+        quantity: 5,
+      },
+      {
+        size: 'XL',
+        quantity: 4,
+      },
+      {
+        size: 'XXL',
+        quantity: 7,
+      },
+      {
+        size: 'XXXL',
+        quantity: 15,
+      },
+    ],
+  },
+];
