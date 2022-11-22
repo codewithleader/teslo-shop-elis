@@ -58,7 +58,7 @@ export const ProductPage: NextPage<Props> = ({ product }) => {
 
   const onAddProduct = () => {
     if (!tempCartProduct.size) return;
-    addProductToCart(tempCartProduct);
+    addProductToCart({...tempCartProduct}); // ? Solución para cortar la referencia.
     // router.push('/cart');
   };
 

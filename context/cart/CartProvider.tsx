@@ -20,12 +20,12 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   const addProductToCart = (product: ICartProduct) => {
     // ! Nivel 1: No funciona porque guarda cada producto aparte y no acumula la cantidad en el mismo producto (repeticion del mismo producto)
 
-    // dispatch({ type: '[CART] - Add Product | storage', payload: product });
+    // dispatch({ type: '[CART] - Updated products in cart | storage', payload: product });
 
     // ! Nivel 2: Tampoco funcionaría
 
     // const productInCart = state.cart.filter(p => p._id !== product._id && p.size !== product.size);
-    // dispatch({ type: '[CART] - Add Product | storage', payload: [...productInCart, product] });
+    // dispatch({ type: '[CART] - Updated products in cart | storage', payload: [...productInCart, product] });
 
     // ? Nivel final: Si funciona
     const productInCart = state.cart.some(p => p._id === product._id);
