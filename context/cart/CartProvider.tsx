@@ -32,17 +32,19 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
       dispatch({ type: '[CART] - LoadCart from cookies | storage', payload: [] });
     }
   }, []);
+  console.log('State useEffect1:', state); //! Array vacio al recargar 🤒
 
   useEffect(() => {
     Cookie.set('cart', JSON.stringify(state.cart));
   }, [state.cart]);
+  console.log('State useEffect2:', state); //! Array vacio al recargar 🤒
 
   const addProductToCart = (product: ICartProduct) => {
-    // ! Nivel 1: No funciona porque guarda cada producto aparte y no acumula la cantidad en el mismo producto (repeticion del mismo producto)
+    //* Nivel 1: No funciona porque guarda cada producto aparte y no acumula la cantidad en el mismo producto (repeticion del mismo producto)
 
     // dispatch({ type: '[CART] - Updated products in cart', payload: product });
 
-    // ! Nivel 2: Tampoco funcionaría
+    //* Nivel 2: Tampoco funcionaría
 
     // const productInCart = state.cart.filter(p => p._id !== product._id && p.size !== product.size);
     // dispatch({ type: '[CART] - Updated products in cart', payload: [...productInCart, product] });
