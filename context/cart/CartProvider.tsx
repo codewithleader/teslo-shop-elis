@@ -96,6 +96,10 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     dispatch({type: '[CART] - Change cart quantity', payload: product})
   };
 
+  const removeCartProduct = (product: ICartProduct) => {
+    dispatch({type: '[CART] - Remove product in cart', payload: product})
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -103,6 +107,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
         // Methods
         addProductToCart,
         updateCartQuantity,
+        removeCartProduct,
       }}
     >
       {children}
