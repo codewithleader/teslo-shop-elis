@@ -38,14 +38,50 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     }
   }, [isMounted]);
 
-  console.log('State useEffect1:', state); //? Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
+  // console.log('State useEffect1:', state); //? Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
 
   // useEffect #2: Add product to Cookies
   useEffect(() => {
     if (isMounted) Cookie.set('cart', JSON.stringify(state.cart));
   }, [state.cart, isMounted]);
 
-  console.log('State useEffect2:', state); //? Array vacio al recargar 🤒
+  // useEffect #3: Product info to Order page
+  useEffect(() => {
+    // Option #1: Más simplificada
+    const numberOfItems = state.cart.reduce(
+      (previousValue, currentValue) => currentValue.quantity + previousValue,
+      0
+    );
+
+    // Option #2: Más visual
+    // const numberOfItems = state.cart.reduce((previousValue, product) => {
+    //   // El segundo argumento "0" es el valor inicial de "previousValue"
+    //   const accumulator = product.quantity + previousValue;
+    //   return accumulator;
+    // }, 0);
+
+    // Option #1: Más simplificada
+    const subTotal = state.cart.reduce(
+      (prev, current) => current.quantity * current.price + prev,
+      0
+    );
+
+    // Option #2: Más visual
+    // const subTotal = state.cart.reduce((previousValue, product) => {
+    //   const currentValue = product.quantity * product.price;
+    //   return previousValue + currentValue;
+    // }, 0)
+
+    const taxRate = 0.10;
+
+    const orderSummary = {
+      numberOfItems,
+      subTotal,
+      tax: subTotal * taxRate,
+    };
+
+    console.log({ orderSummary });
+  }, [state.cart, isMounted]);
 
   const addProductToCart = (product: ICartProduct) => {
     //* Nivel 1: No funciona porque guarda cada producto aparte y no acumula la cantidad en el mismo producto (repeticion del mismo producto)
@@ -93,11 +129,11 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   };
 
   const updateCartQuantity = (product: ICartProduct) => {
-    dispatch({type: '[CART] - Change cart quantity', payload: product})
+    dispatch({ type: '[CART] - Change cart quantity', payload: product });
   };
 
   const removeCartProduct = (product: ICartProduct) => {
-    dispatch({type: '[CART] - Remove product in cart', payload: product})
+    dispatch({ type: '[CART] - Remove product in cart', payload: product });
   };
 
   return (
