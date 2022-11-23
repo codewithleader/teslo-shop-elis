@@ -32,12 +32,12 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
       dispatch({ type: '[CART] - LoadCart from cookies | storage', payload: [] });
     }
   }, []);
-  console.log('State useEffect1:', state); //! Array vacio al recargar 🤒
+  console.log('State useEffect1:', state); //! Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
 
   useEffect(() => {
     Cookie.set('cart', JSON.stringify(state.cart));
   }, [state.cart]);
-  console.log('State useEffect2:', state); //! Array vacio al recargar 🤒
+  console.log('State useEffect2:', state); //! Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
 
   const addProductToCart = (product: ICartProduct) => {
     //* Nivel 1: No funciona porque guarda cada producto aparte y no acumula la cantidad en el mismo producto (repeticion del mismo producto)
