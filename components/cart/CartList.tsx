@@ -28,10 +28,10 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
   return (
     <>
       {cart.map(product => (
-        <Grid container spacing={2} key={product.slug} sx={{ mb: 1 }}>
+        <Grid container spacing={2} key={product.slug + product.size} sx={{ mb: 1 }}>
           <Grid item xs={3}>
             {/* TODO: Llevar a la pagina del producto */}
-            <NextLink href={'/product/slug'} passHref>
+            <NextLink href={`/product/${product.slug}`} passHref>
               <Link>
                 <CardActionArea>
                   <CardMedia
@@ -48,7 +48,7 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
             <Box display={'flex'} flexDirection='column'>
               <Typography variant='body1'>{product.title}</Typography>
               <Typography variant='body1'>
-                Size: <strong>M</strong>
+                Size: <strong>{product.size}</strong>
               </Typography>
 
               {editable
