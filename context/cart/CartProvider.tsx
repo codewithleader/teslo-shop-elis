@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { ICartProduct } from '../../interfaces';
 import { CartContext, cartReducer } from './';
 import Cookie from 'js-cookie';
@@ -17,27 +17,35 @@ interface Props {
 
 export const CartProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Add to Cart from Cookie:
+  // useEffect #2: Add to Cart from Cookie:
   useEffect(() => {
-    try {
-      const cartProductsFromCookie = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [];
+    if (!isMounted) {
+      try {
+        const cartProductsFromCookie = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [];
 
-      dispatch({
-        type: '[CART] - LoadCart from cookies | storage',
-        payload: cartProductsFromCookie,
-      });
-    } catch (error) {
-      // Si existe algun problema al parsear las cookies se envia al state un array vacio:
-      dispatch({ type: '[CART] - LoadCart from cookies | storage', payload: [] });
+        dispatch({
+          type: '[CART] - LoadCart from cookies | storage',
+          payload: cartProductsFromCookie,
+        });
+        setIsMounted(true);
+      } catch (error) {
+        // Si existe algun problema al parsear las cookies se envia al state un array vacio:
+        dispatch({ type: '[CART] - LoadCart from cookies | storage', payload: [] });
+        setIsMounted(true);
+      }
     }
-  }, []);
-  console.log('State useEffect1:', state); //! Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
+  }, [isMounted]);
 
+  console.log('State useEffect1:', state); //? Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
+
+  // useEffect #2: Add product to Cookies
   useEffect(() => {
-    Cookie.set('cart', JSON.stringify(state.cart));
-  }, [state.cart]);
-  console.log('State useEffect2:', state); //! Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
+    if (isMounted) Cookie.set('cart', JSON.stringify(state.cart));
+  }, [state.cart, isMounted]);
+
+  console.log('State useEffect2:', state); //? Array vacio al recargar 🤒
 
   const addProductToCart = (product: ICartProduct) => {
     //* Nivel 1: No funciona porque guarda cada producto aparte y no acumula la cantidad en el mismo producto (repeticion del mismo producto)
