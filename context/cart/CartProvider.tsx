@@ -72,12 +72,14 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     //   return previousValue + currentValue;
     // }, 0)
 
-    const taxRate = 0.10;
+    const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0); // 0.10 (From Environment Variables)
 
     const orderSummary = {
       numberOfItems,
       subTotal,
       tax: subTotal * taxRate,
+      total: subTotal * (taxRate + 1), // Example: 100 * 1.10
+      // total: (subTotal * (taxRate + 1)).toFixed(2), // Example: 100 * 1.10
     };
 
     console.log({ orderSummary });
