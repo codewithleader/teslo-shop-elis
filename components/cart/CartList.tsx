@@ -12,8 +12,9 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
-import { initialData } from '../../database/products';
+// import { initialData } from '../../database/products';
 import { ItemCounter } from '../ui';
+import { ICartProduct } from '../../interfaces';
 
 // const productsInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
 
@@ -23,7 +24,12 @@ interface Props {
 
 export const CartList: React.FC<Props> = ({ editable = false }) => {
   // Get products from State
-  const { cart } = useContext(CartContext);
+  const { cart, updateCartQuantity } = useContext(CartContext);
+
+  const onNewCartQuantityValue = (product: ICartProduct, newQuantityValue: number) => {
+    product.quantity = newQuantityValue;
+    updateCartQuantity(product);
+  };
 
   return (
     <>
@@ -56,7 +62,7 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
                   <ItemCounter
                   currentValue={product.quantity}
                   maxValue={10}
-                  updatedQuantity={() => {}} />
+                  updatedQuantity={(value) => onNewCartQuantityValue(product, value)} />
                 )
                 : (
                 <Typography variant='h5'>{product.quantity} {product.quantity > 1 ? 'products' : 'product'}</Typography>
