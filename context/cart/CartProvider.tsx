@@ -5,10 +5,18 @@ import Cookie from 'js-cookie';
 
 export interface CartState {
   cart: ICartProduct[];
+  numberOfItems: number;
+  subTotal: number;
+  tax: number;
+  total: number;
 }
 
 const CART_INITIAL_STATE: CartState = {
   cart: [],
+  numberOfItems: 0,
+  subTotal: 0,
+  tax: 0,
+  total: 0,
 };
 
 interface Props {
@@ -82,7 +90,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
       // total: (subTotal * (taxRate + 1)).toFixed(2), // Example: 100 * 1.10
     };
 
-    console.log({ orderSummary });
+    dispatch({type: '[CART] - Update Order Summary', payload: orderSummary})
   }, [state.cart, isMounted]);
 
   const addProductToCart = (product: ICartProduct) => {
