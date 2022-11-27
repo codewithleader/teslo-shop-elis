@@ -12,7 +12,6 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 
-// import { initialData } from '../../database/products';
 import { ItemCounter } from '../ui';
 import { ICartProduct } from '../../interfaces';
 
