@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 import { db } from '../../../database';
 import { UserModel } from '../../../models';
-import { jwt } from '../../../utils';
+import { jwt, validations } from '../../../utils';
 
 type Data =
   | { message: string }
@@ -44,8 +44,9 @@ const registerUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
     return res.status(400).json({ message: 'El nombre debe ser mayor a 2 caracteres' });
   }
 
-  // todo: validar email...
-  // if...
+  if (!validations.isValidEmail(email )) {
+    return res.status(400).json({ message: 'Correo no válido' });
+  }
 
   await db.connect();
   const user = await UserModel.findOne({ email }); //! revisar siempre el "await" al consultar models 😬
