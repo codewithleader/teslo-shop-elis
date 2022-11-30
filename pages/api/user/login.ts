@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 
 import { db } from '../../../database';
 import { UserModel } from '../../../models';
+import { jwt } from '../../../utils';
 
 type Data =
   | { message: string }
@@ -32,7 +33,7 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   console.log('Elis', req.body);
 
   await db.connect();
-  const user = await UserModel.findOne({ email });
+  const user = await UserModel.findOne({ email }); //! revisar siempre el "await" al consultar models 😬
   await db.disconnect();
 
   if (!user) {
@@ -47,10 +48,12 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       .json({ message: 'Invalid Email or Password - PASSWORD(BORRAR en prod)' });
   }
 
-  const { role, name } = user;
+  const { role, name, _id } = user;
+
+  const token = jwt.signToken(_id, email);
 
   return res.status(200).json({
-    token: '',
+    token, //jwt
     user: {
       email,
       role,
