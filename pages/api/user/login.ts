@@ -30,7 +30,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 
 const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { email = '', password = '' } = req.body;
-  console.log('Elis', req.body);
+  // console.log('Elis', req.body);
 
   await db.connect();
   const user = await UserModel.findOne({ email }); //! revisar siempre el "await" al consultar models 😬
