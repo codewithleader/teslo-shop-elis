@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import NextLink from 'next/link';
-
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
+
+import { AuthContext } from '../../context';
 
 // import { Box, Button, Divider, Grid, Link, TextField, Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
 import Box from '@mui/material/Box';
@@ -25,6 +27,8 @@ type FormData = {
 };
 
 export const LoginPage = () => {
+  const router = useRouter();
+  const { loginUser } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -36,22 +40,27 @@ export const LoginPage = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const onLoginUser = async ({ email, password }: FormData) => {
-    setIsButtonDisabled(true)
+    setIsButtonDisabled(true);
     setShowError(false);
-    try {
-      const { data } = await tesloApi.post('/user/login', { email, password });
-      const { token, user } = data;
-      console.log('data:', { token, user });
-      setIsButtonDisabled(false)
-    } catch (error) {
-      console.log('Error en las credenciales', error);
-      setIsButtonDisabled(false)
+
+    const isValidLogin = await loginUser(email, password);
+
+    if (!isValidLogin) {
+      setIsButtonDisabled(false);
       setShowError(true);
 
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+
+      return;
     }
+
+    // Habilitar Boton
+    setIsButtonDisabled(false);
+
+    // todo: Navegar a...
+    router.replace('/'); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
   };
 
   return (
@@ -68,7 +77,7 @@ export const LoginPage = () => {
                 color='error'
                 icon={<ErrorOutline />}
                 className='fadeIn'
-                sx={{display: showError ? 'flex' : 'none'}}
+                sx={{ display: showError ? 'flex' : 'none' }}
               />
             </Grid>
 
