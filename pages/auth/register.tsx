@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useForm } from 'react-hook-form';
 
@@ -19,6 +20,7 @@ import ErrorOutline from '@mui/icons-material/ErrorOutline';
 import { AuthLayout } from '../../components/layouts';
 import { tesloApi } from '../../api';
 import { validations } from '../../utils';
+import { AuthContext } from '../../context';
 
 type FormData = {
   name: string;
@@ -27,6 +29,8 @@ type FormData = {
 };
 
 export const RegisterPage = () => {
+  const router = useRouter();
+  const { registerUser } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -35,25 +39,28 @@ export const RegisterPage = () => {
 
   const [showError, setShowError] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const onRegisterUser = async ({ name, email, password }: FormData) => {
     setIsButtonDisabled(true);
     setShowError(false);
 
-    try {
-      const { data } = await tesloApi.post('/user/register', { name, email, password });
-      const { token, user } = data;
-      console.log('data:', { token, user });
-      setIsButtonDisabled(false);
-    } catch (error) {
-      console.log('Error en las credenciales', error);
+    const { hasError, message } = await registerUser(name, email, password);
+
+    if (hasError) {
+      setErrorMessage(message!); // el signo de admiración "!" es para decirle a typescript que si hay un mensaje.
       setIsButtonDisabled(false);
       setShowError(true);
 
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+
+      return;
     }
+
+    // todo: navegar a...
+    router.replace('/'); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
   };
   return (
     <AuthLayout title={'Create Account'}>

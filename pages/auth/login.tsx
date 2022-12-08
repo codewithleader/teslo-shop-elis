@@ -56,9 +56,6 @@ export const LoginPage = () => {
       return;
     }
 
-    // Habilitar Boton
-    setIsButtonDisabled(false);
-
     // todo: Navegar a...
     router.replace('/'); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
   };
