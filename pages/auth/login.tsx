@@ -56,7 +56,7 @@ export const LoginPage = () => {
       return;
     }
 
-    // todo: Navegar a...
+    // Navegar a...
     const destination = router.query.page?.toString() || '/';
     router.replace(destination); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
   };
@@ -123,7 +123,7 @@ export const LoginPage = () => {
             </Grid>
 
             <Grid item xs={12} display='flex' justifyContent='end'>
-              <NextLink href='/auth/register' passHref>
+              <NextLink href={router.query.page ? `/auth/register?page=${router.query.page}` : '/auth/register'} passHref>
                 <Link underline='always'>Create Account</Link>
               </NextLink>
             </Grid>

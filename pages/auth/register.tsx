@@ -59,8 +59,9 @@ export const RegisterPage = () => {
       return;
     }
 
-    // todo: navegar a...
-    router.replace('/'); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
+    // Navegar a...
+    const destination = router.query.page?.toString() || '/';
+    router.replace(destination); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
   };
   return (
     <AuthLayout title={'Create Account'}>
@@ -138,7 +139,7 @@ export const RegisterPage = () => {
             </Grid>
 
             <Grid item xs={12} display='flex' justifyContent='end'>
-              <NextLink href='/auth/login' passHref>
+              <NextLink href={router.query.page ? `/auth/login?page=${router.query.page}` : '/auth/login'} passHref>
                 <Link underline='always'>Sing In</Link>
               </NextLink>
             </Grid>
