@@ -28,6 +28,12 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   const checkToken = async () => {
+    // Validar si existe token en cookies
+    if (!Cookies.get('token')) {
+      return;
+    }
+
+    // Validar token y sign in.
     try {
       const { data } = await tesloApi.get('/user/validate-token'); // No es necesario mandar las cookies porque las cookies se envían automaticamente al servidor.
 
