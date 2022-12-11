@@ -64,7 +64,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
       return true;
     } catch (error) {
-      console.log('An error here', error);
       return false;
     }
   };
