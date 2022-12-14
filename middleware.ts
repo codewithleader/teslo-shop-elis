@@ -1,26 +1,28 @@
 import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
-import { jwt } from './utils';
+// import { jwt } from './utils';
+// import { verifyAuth } from '@lib/auth'
 
 export async function middleware(req: NextRequest, e: NextFetchEvent) {
   // console.log(req.nextUrl);
   if (req.nextUrl.pathname.startsWith('/checkout/')) {
-    const token = req.cookies.get('token') || '';
-    // console.log(token);
-    // console.log({page: req.nextUrl.pathname});
-    const requestedPage = req.nextUrl.pathname;
-    const url = req.nextUrl.clone();
+    // const verifiedToken = await verifyAuth(req).catch((err) => {
+    //   console.error(err.message)
+    // })
 
-    // ! nada de lo que hay aqui en esta funcion sirve 😃
+    const token = req.cookies.get('token') || '';
+    console.log({ token });
+    const url = req.nextUrl.clone();
+    // const requestedPage = req.nextUrl.pathname;
+    const requestedPage = url.pathname;
+
+    // url.pathname = '/auth/login?page='+`${requestedPage}`;
 
     try {
       // await jwt.isValidToken(token); //! No funciona las utils en los middlewares
-      // return NextResponse.next();
-      url.pathname = `/auth/login?page=${requestedPage}`;
-      return NextResponse.redirect(url);
-      // return NextResponse.redirect(`/auth/login?page=${requestedPage}`);
+      return NextResponse.next();
     } catch (error) {
-      return NextResponse.redirect(url);
-      // return NextResponse.redirect(`/auth/login?page=${requestedPage}`);
+      return NextResponse.redirect(`/auth/login?page=${requestedPage}`);
+      // return NextResponse.redirect(new URL('/', req.url)) // De la documentacion.
     }
   }
 }

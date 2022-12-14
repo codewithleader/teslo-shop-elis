@@ -10,6 +10,19 @@ export interface CartState {
   subTotal: number;
   tax: number;
   total: number;
+
+  shippingAddress?: ShippingAddress;
+}
+
+export interface ShippingAddress {
+  firstName: string;
+  lastName: string;
+  address: string;
+  address2?: string;
+  zip: string;
+  city: string;
+  country: string;
+  phone: string;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -19,6 +32,7 @@ const CART_INITIAL_STATE: CartState = {
   subTotal: 0,
   tax: 0,
   total: 0,
+  shippingAddress: undefined,
 };
 
 interface Props {
@@ -29,7 +43,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
   const [isMounted, setIsMounted] = useState(false);
 
-  // useEffect #2: Add to Cart from Cookie:
+  // useEffect #1: Add to Cart from Cookie:
   useEffect(() => {
     if (!isMounted) {
       try {
@@ -50,7 +64,25 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   // console.log('State useEffect1:', state); //? Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
 
-  // useEffect #2: Add product to Cookies
+  // useEffect #2: Update Cart from Cookie:
+  useEffect(() => {
+    if (Cookie.get('firstName')) {
+      const shippingAddress = {
+        firstName: Cookie.get('firstName') || '',
+        lastName: Cookie.get('lastName') || '',
+        address: Cookie.get('address') || '',
+        address2: Cookie.get('address2') || '',
+        zip: Cookie.get('zip') || '',
+        city: Cookie.get('city') || '',
+        country: Cookie.get('country') || '',
+        phone: Cookie.get('phone') || '',
+      };
+
+      dispatch({ type: '[CART] - LoadAddress From Cookies', payload: shippingAddress });
+    }
+  }, []);
+
+  // useEffect #3: Add product to Cookies
   useEffect(() => {
     if (isMounted) Cookie.set('cart', JSON.stringify(state.cart));
   }, [state.cart, isMounted]);
@@ -92,7 +124,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
       // total: (subTotal * (taxRate + 1)).toFixed(2), // Example: 100 * 1.10
     };
 
-    dispatch({type: '[CART] - Update Order Summary', payload: orderSummary})
+    dispatch({ type: '[CART] - Update Order Summary', payload: orderSummary });
   }, [state.cart, isMounted]);
 
   const addProductToCart = (product: ICartProduct) => {
