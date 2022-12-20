@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 import { ICartProduct } from '../../interfaces';
 import { CartContext, cartReducer } from './';
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 export interface CartState {
   cart: ICartProduct[];
@@ -43,15 +43,15 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
   const [isMounted, setIsMounted] = useState(false);
 
-  // useEffect #1: Add to Cart from Cookie:
+  // useEffect #1: Add to Cart from Cookies:
   useEffect(() => {
     if (!isMounted) {
       try {
-        const cartProductsFromCookie = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [];
+        const cartProductsFromCookies = Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [];
 
         dispatch({
           type: '[CART] - LoadCart from cookies | storage',
-          payload: cartProductsFromCookie,
+          payload: cartProductsFromCookies,
         });
         setIsMounted(true);
       } catch (error) {
@@ -64,18 +64,18 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   // console.log('State useEffect1:', state); //? Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
 
-  // useEffect #2: Update Cart from Cookie:
+  // useEffect #2: Update Cart from Cookies:
   useEffect(() => {
-    if (Cookie.get('firstName')) {
+    if (Cookies.get('firstName')) {
       const shippingAddress = {
-        firstName: Cookie.get('firstName') || '',
-        lastName: Cookie.get('lastName') || '',
-        address: Cookie.get('address') || '',
-        address2: Cookie.get('address2') || '',
-        zip: Cookie.get('zip') || '',
-        city: Cookie.get('city') || '',
-        country: Cookie.get('country') || '',
-        phone: Cookie.get('phone') || '',
+        firstName: Cookies.get('firstName') || '',
+        lastName: Cookies.get('lastName') || '',
+        address: Cookies.get('address') || '',
+        address2: Cookies.get('address2') || '',
+        zip: Cookies.get('zip') || '',
+        city: Cookies.get('city') || '',
+        country: Cookies.get('country') || '',
+        phone: Cookies.get('phone') || '',
       };
 
       dispatch({ type: '[CART] - LoadAddress From Cookies', payload: shippingAddress });
@@ -84,7 +84,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
   // useEffect #3: Add product to Cookies
   useEffect(() => {
-    if (isMounted) Cookie.set('cart', JSON.stringify(state.cart));
+    if (isMounted) Cookies.set('cart', JSON.stringify(state.cart));
   }, [state.cart, isMounted]);
 
   // useEffect #3: Product info to Order page
@@ -181,14 +181,14 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   };
 
   const updateAddress = (address: ShippingAddress) => {
-    Cookie.set('firstName', address.firstName);
-    Cookie.set('lastName', address.lastName);
-    Cookie.set('address', address.address);
-    Cookie.set('address2', address.address2 || '');
-    Cookie.set('zip', address.zip);
-    Cookie.set('city', address.city);
-    Cookie.set('country', address.country);
-    Cookie.set('phone', address.phone);
+    Cookies.set('firstName', address.firstName);
+    Cookies.set('lastName', address.lastName);
+    Cookies.set('address', address.address);
+    Cookies.set('address2', address.address2 || '');
+    Cookies.set('zip', address.zip);
+    Cookies.set('city', address.city);
+    Cookies.set('country', address.country);
+    Cookies.set('phone', address.phone);
 
     dispatch({ type: '[CART] - Update Address', payload: address });
   };
