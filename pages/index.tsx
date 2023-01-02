@@ -1,16 +1,16 @@
+// NextJS
 import type { NextPage } from 'next';
-
-// import { Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
+// mui
 import Typography from '@mui/material/Typography';
-
+// components
 import { ShopLayout } from '../components/layouts';
 import { ProductList } from '../components/products';
 import { FullScreenLoading } from '../components/ui';
-
+// custom hooks
 import { useProducts } from '../hooks';
 
 const HomePage: NextPage = () => {
-  const { isError, isLoading, products } = useProducts('/products');
+  const { isLoading, products } = useProducts('/products');
 
   return (
     <ShopLayout

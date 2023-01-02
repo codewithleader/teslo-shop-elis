@@ -10,26 +10,29 @@ import { SWRConfig } from 'swr';
 
 import { lightTheme } from '../themes';
 import { AuthProvider, CartProvider, UiProvider } from '../context';
+import { SessionProvider } from 'next-auth/react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SWRConfig
-      value={{
-        // refreshInterval: 300, // Hace la petición cada 3 seg y devuelve status(304) si no hay cambios
-        fetcher: (resource, init) => fetch(resource, init).then(res => res.json()),
-      }}
-    >
-      <AuthProvider>
-        <CartProvider>
-          <UiProvider>
-            <ThemeProvider theme={lightTheme}>
-              <CssBaseline />
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </UiProvider>
-        </CartProvider>
-      </AuthProvider>
-    </SWRConfig>
+    <SessionProvider>
+      <SWRConfig
+        value={{
+          // refreshInterval: 300, // Hace la petición cada 3 seg y devuelve status(304) si no hay cambios
+          fetcher: (resource, init) => fetch(resource, init).then(res => res.json()),
+        }}
+      >
+        <AuthProvider>
+          <CartProvider>
+            <UiProvider>
+              <ThemeProvider theme={lightTheme}>
+                <CssBaseline />
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </UiProvider>
+          </CartProvider>
+        </AuthProvider>
+      </SWRConfig>
+    </SessionProvider>
   );
 }
 
