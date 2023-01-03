@@ -27,10 +27,19 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
-
+  // Custom Pages
+  pages: {
+    signIn: '/auth/login',
+    newUser: '/auth/register',
+  },
   // Callbacks
   jwt: {
     // secret: process.env.JWT_SECRET_SEED, //! deprecated
+  },
+  session: {
+    maxAge: 2592000, // 30días
+    strategy: 'jwt',
+    updateAge: 86400, // cada día
   },
   callbacks: {
     async jwt({ token, account, user }) {
@@ -38,7 +47,7 @@ export default NextAuth({
         token.accessToken = account.access_token;
         switch (account.type) {
           case 'oauth':
-            // todo: verificar usuario si existe en database
+            token.user = await dbUsers.oAuthToDbUser(user?.email || '', user?.name || '');
             break;
 
           case 'credentials':
@@ -49,7 +58,7 @@ export default NextAuth({
 
       return token;
     },
-    async session({ session, token, user }){
+    async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       session.user = token.user as any;

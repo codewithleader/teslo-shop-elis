@@ -1,11 +1,14 @@
+// React
 import { useContext, useState } from 'react';
+// NextJS
+import { GetServerSideProps } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-
+// next-auth
+import { getSession, signIn } from 'next-auth/react';
+// Form
 import { useForm } from 'react-hook-form';
-
-// import { Box, Button, Divider, Grid, Link, TextField, Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
-
+// mui
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
@@ -13,13 +16,12 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-// import Divider from '@mui/material/Divider';
-
 import ErrorOutline from '@mui/icons-material/ErrorOutline';
-
+// components
 import { AuthLayout } from '../../components/layouts';
-import { tesloApi } from '../../api';
+// utils
 import { validations } from '../../utils';
+// context
 import { AuthContext } from '../../context';
 
 type FormData = {
@@ -60,8 +62,10 @@ export const RegisterPage = () => {
     }
 
     // Navegar a...
-    const destination = router.query.page?.toString() || '/';
-    router.replace(destination); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
+    // const destination = router.query.page?.toString() || '/';
+    // router.replace(destination); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
+
+    await signIn('credentials', { email, password });
   };
   return (
     <AuthLayout title={'Create Account'}>
@@ -139,7 +143,10 @@ export const RegisterPage = () => {
             </Grid>
 
             <Grid item xs={12} display='flex' justifyContent='end'>
-              <NextLink href={router.query.page ? `/auth/login?page=${router.query.page}` : '/auth/login'} passHref>
+              <NextLink
+                href={router.query.page ? `/auth/login?page=${router.query.page}` : '/auth/login'}
+                passHref
+              >
                 <Link underline='always'>Sing In</Link>
               </NextLink>
             </Grid>
@@ -148,6 +155,27 @@ export const RegisterPage = () => {
       </form>
     </AuthLayout>
   );
+};
+
+// ?: Esto verifica si ya hay una session activa. Si la hay redirecciona. Si no hay entonces si permite el ingreso a la pagina de register
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+  const session = await getSession({ req });
+  const { page = '/' } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: page.toString(),
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default RegisterPage;

@@ -1,11 +1,14 @@
-import { useContext, useState } from 'react';
+// React
+import { useEffect, useState } from 'react';
+// NextJS
+import { GetServerSideProps } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+// next-auth
+import { getProviders, getSession, signIn } from 'next-auth/react';
+// Form
 import { useForm } from 'react-hook-form';
-
-import { AuthContext } from '../../context';
-
-// import { Box, Button, Divider, Grid, Link, TextField, Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
+// mui
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
@@ -13,13 +16,12 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-// import Divider from '@mui/material/Divider';
-
-import { AuthLayout } from '../../components/layouts';
-import { tesloApi } from '../../api';
-import { validations } from '../../utils';
-
 import ErrorOutline from '@mui/icons-material/ErrorOutline';
+import Divider from '@mui/material/Divider';
+// components
+import { AuthLayout } from '../../components/layouts';
+// utils
+import { validations } from '../../utils';
 
 type FormData = {
   email: string;
@@ -28,7 +30,6 @@ type FormData = {
 
 export const LoginPage = () => {
   const router = useRouter();
-  const { loginUser } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -38,27 +39,21 @@ export const LoginPage = () => {
 
   const [showError, setShowError] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [providers, setProviders] = useState<any>({});
+
+  useEffect(() => {
+    getProviders().then(providers => {
+      // console.log({ providers }); // objeto con los providers credentials and github.
+      setProviders(providers);
+    });
+  }, []);
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setIsButtonDisabled(true);
     setShowError(false);
 
-    const isValidLogin = await loginUser(email, password);
-
-    if (!isValidLogin) {
-      setIsButtonDisabled(false);
-      setShowError(true);
-
-      setTimeout(() => {
-        setShowError(false);
-      }, 3000);
-
-      return;
-    }
-
-    // Navegar a...
-    const destination = router.query.page?.toString() || '/';
-    router.replace(destination); // Con "replace" reemplaza la pagina de login para impedir que el usuario regrese a ella con el boton "atrás" del navegador.
+    // Login mediante NextAuth
+    await signIn('credentials', { email, password });
   };
 
   return (
@@ -123,15 +118,62 @@ export const LoginPage = () => {
             </Grid>
 
             <Grid item xs={12} display='flex' justifyContent='end'>
-              <NextLink href={router.query.page ? `/auth/register?page=${router.query.page}` : '/auth/register'} passHref>
+              <NextLink
+                href={
+                  router.query.page ? `/auth/register?page=${router.query.page}` : '/auth/register'
+                }
+                passHref
+              >
                 <Link underline='always'>Create Account</Link>
               </NextLink>
+            </Grid>
+
+            <Grid item xs={12} display='flex' flexDirection='column' justifyContent='end'>
+              <Divider sx={{ width: '100%', mb: 2 }} />
+              {Object.values(providers).map((provider: any) => {
+                if (provider.id === 'credentials') {
+                  return (<div key='credentials'></div>)
+                }
+                return (
+                  <Button
+                    key={provider.id}
+                    variant='outlined'
+                    fullWidth
+                    color='primary'
+                    sx={{ mb: 1 }}
+                    onClick={() => signIn(provider.id)}
+                  >
+                    {provider.name}
+                  </Button>
+                );
+              })}
             </Grid>
           </Grid>
         </Box>
       </form>
     </AuthLayout>
   );
+};
+
+// ?: Esto verifica si ya hay una session activa. Si la hay redirecciona. Si no hay entonces si permite el ingreso a la pagina de login
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+  const session = await getSession({ req });
+  const { page = '/' } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: page.toString(),
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default LoginPage;
