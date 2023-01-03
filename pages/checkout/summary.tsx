@@ -1,7 +1,13 @@
-import { useContext } from 'react';
+// React
+import { useContext, useEffect } from 'react';
+// NextJS
 import NextLink from 'next/link';
-
-// import { Box, Button, Card, CardContent, Divider, Grid, Link, Typography } from '@mui/material'; // No usar asi porque es mas lento en dev.
+import { useRouter } from 'next/router';
+// others
+import Cookies from 'js-cookie';
+// context
+import { CartContext } from '../../context';
+// mui
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -10,19 +16,26 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-
-import { CartContext } from '../../context';
+// Custom Components
 import { CartList, OrderSummary } from '../../components/cart';
 import { ShopLayout } from '../../components/layouts';
+// utils
 import { countries } from '../../utils';
 
 export const SummaryPage = () => {
+  const router = useRouter();
   const { shippingAddress, numberOfItems } = useContext(CartContext);
-  
+
+  useEffect(() => {
+    if (!Cookies.get('firstName')) {
+      router.push('/checkout/address');
+    }
+  }, [router]);
 
   if (!shippingAddress) {
     return <></>;
   }
+
   const { address, address2, city, country, firstName, lastName, phone, zip } = shippingAddress;
 
   return (
@@ -56,10 +69,14 @@ export const SummaryPage = () => {
                 {firstName} {lastName}
               </Typography>
               <Typography>
-                {address}{address2 ? `, ${address2}` : ''}
+                {address}
+                {address2 ? `, ${address2}` : ''}
               </Typography>
-              <Typography>{city}, {zip}</Typography>
-              <Typography>{countries.find(c=>c.code === country)?.name}</Typography>
+              <Typography>
+                {city}, {zip}
+              </Typography>
+              {/* <Typography>{countries.find(c => c.code === country)?.name}</Typography> */}
+              <Typography>{country}</Typography>
               <Typography>{phone}</Typography>
 
               <Divider sx={{ my: 1 }} />
