@@ -1,7 +1,11 @@
+// React
 import { useEffect, useReducer, useState } from 'react';
-import { ICartProduct } from '../../interfaces';
-import { CartContext, cartReducer } from './';
+// cookies
 import Cookies from 'js-cookie';
+// context
+import { CartContext, cartReducer } from './';
+// Interfaces
+import { ICartProduct, ShippingAddress } from '../../interfaces';
 
 export interface CartState {
   cart: ICartProduct[];
@@ -12,17 +16,6 @@ export interface CartState {
   total: number;
 
   shippingAddress?: ShippingAddress;
-}
-
-export interface ShippingAddress {
-  firstName: string;
-  lastName: string;
-  address: string;
-  address2?: string;
-  zip: string;
-  city: string;
-  country: string;
-  phone: string;
 }
 
 const CART_INITIAL_STATE: CartState = {
