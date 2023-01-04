@@ -36,7 +36,7 @@ export const CartList: React.FC<Props> = ({ editable = false }) => {
         <Grid container spacing={2} key={product.slug + product.size} sx={{ mb: 1 }}>
           <Grid item xs={3}>
             {/* TODO: Llevar a la pagina del producto */}
-            <NextLink href={`/product/${product.slug}`} passHref>
+            <NextLink href={`/product/${product.slug}`} passHref legacyBehavior>
               <Link>
                 <CardActionArea>
                   <CardMedia

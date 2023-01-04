@@ -22,7 +22,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const productImage = useMemo(() => {
-    // todo: (SOLUCIONADO - NO BORRAR) Aquí es donde está el problema. La imagen la está buscando en {{url}}/category/products/img.jpg y acá la está sirviendo en {{url}}/products/img.jpg (Solucionado pero no borrar para que quede el recordatorio)
+    // ? (SOLUCIONADO - NO BORRAR) Aquí es donde está el problema. La imagen la está buscando en {{url}}/category/products/img.jpg y acá la está sirviendo en {{url}}/products/img.jpg (Solucionado pero no borrar para que quede el recordatorio)
     // ?: SOLUCION: Agregar el "/" antes de "products/" para indicar que se base en la raíz
     return isHovered ? `/products/${product.images[1]}` : `/products/${product.images[0]}`;
   }, [isHovered, product.images]);
@@ -36,7 +36,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Card>
-        <NextLink href={`/product/${product.slug}`} passHref prefetch={false}>
+        <NextLink href={`/product/${product.slug}`} passHref legacyBehavior prefetch={false}>
           <Link>
             <CardActionArea>
               {/* Sold Out */}

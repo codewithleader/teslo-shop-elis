@@ -23,7 +23,7 @@ export const EmptyPage = () => {
         <Box display='flex' flexDirection='column' alignItems='center'>
           <Typography marginLeft={2}>Your cart is empty</Typography>
 
-          <NextLink href='/' passHref>
+          <NextLink href='/' passHref legacyBehavior>
             <Link typography={'h6'} color={'secondary'}>
               Continue Shopping
             </Link>

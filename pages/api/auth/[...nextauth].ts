@@ -15,7 +15,7 @@ export default NextAuth({
       },
       async authorize(credentials) {
         console.log({ credentials });
-        // Todo: validar contra database.
+        // TODO: validar contra database.
         // return { email: 'juan@juan.com', id: '124563' };
 
         return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password);

@@ -12,7 +12,7 @@ export const ProductList: React.FC<Props> = ({ products }) => {
       {products.map(product => (
         <ProductCard
           product={product}
-          key={product.slug} // todo: Reemplazar por product._id cuando se conecte a database.
+          key={product.slug} //TODO: Reemplazar por product._id cuando se conecte a database.
         />
       ))}
     </Grid>

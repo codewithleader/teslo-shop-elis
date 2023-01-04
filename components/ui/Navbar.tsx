@@ -50,7 +50,7 @@ export const Navbar = () => {
   return (
     <AppBar>
       <Toolbar>
-        <NextLink href={'/'} passHref>
+        <NextLink href={'/'} passHref legacyBehavior>
           <Link display='flex' alignItems='center'>
             <Typography variant='h6'>Teslo |</Typography>
             <Typography sx={{ ml: 0.5 }}>Shop</Typography>
@@ -60,19 +60,19 @@ export const Navbar = () => {
         <Box flex={1} />
 
         <Box sx={{ display: isSearchVisible ? 'none' : { xs: 'none', sm: 'block' } }}>
-          <NextLink href={'/category/men'} passHref>
+          <NextLink href={'/category/men'} passHref legacyBehavior>
             <Link>
               <Button color={router.asPath === '/category/men' ? 'primary' : 'info'}>Men</Button>
             </Link>
           </NextLink>
-          <NextLink href={'/category/women'} passHref>
+          <NextLink href={'/category/women'} passHref legacyBehavior>
             <Link>
               <Button color={router.asPath === '/category/women' ? 'primary' : 'info'}>
                 Women
               </Button>
             </Link>
           </NextLink>
-          <NextLink href={'/category/kids'} passHref>
+          <NextLink href={'/category/kids'} passHref legacyBehavior>
             <Link>
               <Button color={router.asPath === '/category/kids' ? 'primary' : 'info'}>Kids</Button>
             </Link>
@@ -122,7 +122,7 @@ export const Navbar = () => {
         </IconButton>
 
         {/* Cart Icon */}
-        <NextLink href={'/cart'} passHref>
+        <NextLink href={'/cart'} passHref legacyBehavior>
           <Link>
             <IconButton>
               <Badge badgeContent={numberOfItems > 9 ? '+9' : numberOfItems} color='secondary'>

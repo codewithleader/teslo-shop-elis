@@ -59,7 +59,7 @@ export const ProductPage: NextPage<Props> = ({ product }) => {
   const onAddProduct = () => {
     if (!tempCartProduct.size) return;
     addProductToCart({...tempCartProduct}); // ? Solución para cortar la referencia.
-    router.push('/cart'); // todo: Ir al carrito justo después de agregar un producto al carrito
+    router.push('/cart'); // TODO: Ir al carrito justo después de agregar un producto al carrito (No me gusta)
   };
 
   const onUpdatedQuantity = (newQuantity: number) => {

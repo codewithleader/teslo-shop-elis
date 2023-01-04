@@ -1,17 +1,6 @@
+// NextJS
 import NextLink from 'next/link';
-
-// import {
-//   Box,
-//   Button,
-//   Card,
-//   CardContent,
-//   Chip,
-//   Divider,
-//   Grid,
-//   Link,
-//   Typography,
-// } from '@mui/material'; // No usar asi porque es mas lento en dev.
-
+// mui
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -21,10 +10,9 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-
 import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined';
 import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
-
+// Custom Components
 import { ShopLayout } from '../../components/layouts';
 import { CartList, OrderSummary } from '../../components/cart';
 
@@ -65,7 +53,7 @@ export const OrderPage = () => {
 
               <Box display='flex' justifyContent={'space-between'}>
                 <Typography variant='subtitle1'>Shipping Address</Typography>
-                <NextLink href={'/checkout/address'} passHref>
+                <NextLink href={'/checkout/address'} passHref legacyBehavior>
                   <Link underline='always'>Edit</Link>
                 </NextLink>
               </Box>
@@ -79,7 +67,7 @@ export const OrderPage = () => {
               <Divider sx={{ my: 1 }} />
 
               <Box display='flex' justifyContent={'end'}>
-                <NextLink href={'/cart'} passHref>
+                <NextLink href={'/cart'} passHref legacyBehavior>
                   <Link underline='always'>Edit</Link>
                 </NextLink>
               </Box>
