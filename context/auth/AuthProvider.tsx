@@ -31,19 +31,12 @@ interface Props {
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
   const { data, status } = useSession();
-  // console.log({data, status});
-  // const router = useRouter();
 
   useEffect(() => {
     if (status === 'authenticated') {
-      console.log({ user: data?.user });
       dispatch({ type: '[AUTH] - Login', payload: data?.user as IUser });
     }
   }, [status, data]);
-
-  // useEffect(() => {
-  //   checkToken();
-  // }, []);
 
   const checkToken = async () => {
     // Validar si existe token en cookies
@@ -51,7 +44,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
       return;
     }
 
-    // Validar token y sign in.
+    // Validar token y signIn.
     try {
       const { data } = await tesloApi.get('/user/validate-token'); // No es necesario mandar las cookies porque las cookies se envían automaticamente al servidor.
 
@@ -128,8 +121,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     Cookies.remove('phone');
 
     signOut();
-    // Cookies.remove('token');
-    // router.reload();
   };
 
   return (
