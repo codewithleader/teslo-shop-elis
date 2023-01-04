@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
 
+// Solucion al error: Agregue esta línea aquí para establecer strictQuery en false
+mongoose.set('strictQuery', false);
+
 /**
  * 0 = disconnected
  * 1 = connected
@@ -27,6 +30,7 @@ export const connect = async () => {
     await mongoose.disconnect();
   }
 
+  mongoose.set('strictQuery', false);
   await mongoose.connect(process.env.MONGO_URL || '');
   mongoConnection.isConnected = 1;
   console.log('Connected to MongoDB:', process.env.MONGO_URL);
