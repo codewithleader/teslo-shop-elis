@@ -1,16 +1,16 @@
-import { IUser } from './user';
+import { IUser, ISize } from './';
 
 export interface IOrder {
   _id?: string;
   user?: IUser | string;
   orderItems: IOrderItem[];
-  shippingAddress: ShippingAddress;
   paymentResult?: string;
+  shippingAddress: ShippingAddress;
 
-  numberOfItems: number;
-  subTotal: number;
   tax: number;
   total: number;
+  subTotal: number;
+  numberOfItems: number;
 
   isPaid: boolean;
   paidAt?: string;
@@ -22,21 +22,22 @@ export interface IOrder {
 
 interface IOrderItem {
   _id: string;
-  title: string;
-  size: string;
-  quantity: number;
+  size: ISize;
   slug: string;
   image: string;
   price: number;
+  title: string;
+  gender: 'men' | 'women' | 'kid' | 'unisex';
+  quantity: number;
 }
 
 export interface ShippingAddress {
-  firstName: string;
-  lastName: string;
-  address: string;
-  address2?: string;
   zip: string;
   city: string;
-  country: string;
   phone: string;
+  address: string;
+  country: string;
+  lastName: string;
+  address2?: string;
+  firstName: string;
 }

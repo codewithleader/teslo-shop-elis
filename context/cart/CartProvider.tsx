@@ -5,7 +5,9 @@ import Cookies from 'js-cookie';
 // context
 import { CartContext, cartReducer } from './';
 // Interfaces
-import { ICartProduct, ShippingAddress } from '../../interfaces';
+import { ICartProduct, IOrder, ShippingAddress } from '../../interfaces';
+// utils
+import { tesloApi } from '../../api';
 
 export interface CartState {
   cart: ICartProduct[];
@@ -186,6 +188,30 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     dispatch({ type: '[CART] - Update Address', payload: address });
   };
 
+  const createOrder = async () => {
+    if (!state.shippingAddress) {
+      throw new Error('No hay dirección de Entrega');
+    }
+
+    // Preparar la orden
+    const body: IOrder = {
+      orderItems: state.cart.map(p => ({ ...p, size: p.size! })),
+      shippingAddress: state.shippingAddress,
+      numberOfItems: state.numberOfItems,
+      subTotal: state.subTotal,
+      tax: state.tax,
+      total: state.total,
+      isPaid: false,
+    };
+
+    try {
+      const { data } = await tesloApi.post('/orders', body);
+      console.log({ data });
+    } catch (error) {
+      console.log('Error en createOrder:', error);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -195,6 +221,9 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
         updateCartQuantity,
         removeCartProduct,
         updateAddress,
+
+        // Orders
+        createOrder,
       }}
     >
       {children}
