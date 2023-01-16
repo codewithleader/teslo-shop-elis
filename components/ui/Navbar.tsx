@@ -1,35 +1,24 @@
+// react
 import { useContext, useState } from 'react';
+// next
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-
-// import {
-//   AppBar,
-//   Badge,
-//   Box,
-//   Button,
-//   IconButton,
-//   Input,
-//   InputAdornment,
-//   Link,
-//   Toolbar,
-//   Typography,
-// } from '@mui/material'; // No usar asi porque es mas lento en dev.
-
-import AppBar from '@mui/material/AppBar';
-import Badge from '@mui/material/Badge';
+// mui/material
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
 import Link from '@mui/material/Link';
+import Badge from '@mui/material/Badge';
+import Input from '@mui/material/Input';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-
+import InputAdornment from '@mui/material/InputAdornment';
+// mui/icons
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-
+// context
 import { CartContext, UiContext } from '../../context';
 
 export const Navbar = () => {
