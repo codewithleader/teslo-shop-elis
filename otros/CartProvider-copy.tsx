@@ -59,6 +59,8 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     }
   }, [isMounted]);
 
+  // console.log('State useEffect1:', state); //? Array vacio al recargar 🤒 SOLUCION: desactivar reactStrictMode en el file next.config.js o implementar un useState isMounted
+
   // useEffect #2: Update Cart from Cookies:
   useEffect(() => {
     if (Cookies.get('firstName')) {
@@ -90,10 +92,24 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
       0
     );
 
+    // Option #2: Más visual
+    // const numberOfItems = state.cart.reduce((previousValue, product) => {
+    //   // El segundo argumento "0" es el valor inicial de "previousValue"
+    //   const accumulator = product.quantity + previousValue;
+    //   return accumulator;
+    // }, 0);
+
+    // Option #1: Más simplificada
     const subTotal = state.cart.reduce(
       (prev, current) => current.quantity * current.price + prev,
       0
     );
+
+    // Option #2: Más visual
+    // const subTotal = state.cart.reduce((previousValue, product) => {
+    //   const currentValue = product.quantity * product.price;
+    //   return previousValue + currentValue;
+    // }, 0)
 
     const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0); // 0.10 (From Environment Variables)
 
@@ -109,6 +125,16 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
   }, [state.cart, isMounted]);
 
   const addProductToCart = (product: ICartProduct) => {
+    //* Nivel 1: No funciona porque guarda cada producto aparte y no acumula la cantidad en el mismo producto (repeticion del mismo producto)
+
+    // dispatch({ type: '[CART] - Updated products in cart', payload: product });
+
+    //* Nivel 2: Tampoco funcionaría
+
+    // const productInCart = state.cart.filter(p => p._id !== product._id && p.size !== product.size);
+    // dispatch({ type: '[CART] - Updated products in cart', payload: [...productInCart, product] });
+
+    // ? Nivel final: Si funciona
     const productInCart = state.cart.some(p => p._id === product._id);
     if (!productInCart) {
       return dispatch({
@@ -168,7 +194,7 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
    * It creates an order
    * @returns {} { hasError, message } An object with two properties: hasError and message. message puede ser un mensaje de error o, si todo sale bien, es el id de la orden.
    */
-  const createOrder = async (): Promise<{ hasError: boolean; message: string }> => {
+  const createOrder = async ():Promise<{hasError: boolean; message: string}> => {
     if (!state.shippingAddress) {
       throw new Error('No hay dirección de Entrega');
     }
@@ -186,25 +212,24 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
 
     try {
       const { data } = await tesloApi.post<IOrder>('/orders', body);
-
-      dispatch({ type: '[CART] - Order complete' });
+      // todo: dispatch
 
       return {
         hasError: false,
         message: data._id!,
-      };
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return {
           hasError: true,
           message: error.response?.data.message,
-        };
+        }
       }
 
       return {
         hasError: true,
         message: 'Error no controlado, hable con el administrador',
-      };
+      }
     }
   };
 

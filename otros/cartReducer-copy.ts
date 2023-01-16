@@ -41,6 +41,8 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
           if (product._id !== action.payload._id) return product;
           if (product.size !== action.payload.size) return product;
 
+          // product.quantity = action.payload.quantity;
+          // return product;
           return action.payload; // Producto con la cantidad actualizada.
         }),
       };
@@ -52,6 +54,24 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
         cart: state.cart.filter(
           product => !(product._id === action.payload._id && product.size === action.payload.size) // true or false: Si es true mantiene el producto, si es false lo elimina del array.
         ),
+
+        // Option #2:
+        // cart: state.cart.filter(product => {
+        //   if (product._id === action.payload._id && product.size === action.payload.size) {
+        //     return false;
+        //   }
+        //   return true;
+        // }),
+
+        // Option #3:
+        // cart: state.cart.filter(product => {
+        //   if (product._id === action.payload._id) {
+        //     if (product.size === action.payload.size) {
+        //       return false;
+        //     }
+        //   }
+        //   return true;
+        // }),
       };
 
     case '[CART] - Update Order Summary':
@@ -66,16 +86,6 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
         ...state,
         shippingAddress: action.payload,
       };
-
-    case '[CART] - Order complete':
-      return {
-        ...state,
-        cart: [],
-        numberOfItems: 0,
-        subTotal: 0,
-        tax: 0,
-        total: 0,
-      }
 
     default:
       return state;
