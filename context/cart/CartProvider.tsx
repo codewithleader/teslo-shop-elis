@@ -2,12 +2,14 @@
 import { useEffect, useReducer, useState } from 'react';
 // cookies
 import Cookies from 'js-cookie';
+// axios
+import axios from 'axios';
+// utils
+import { tesloApi } from '../../api';
 // context
 import { CartContext, cartReducer } from './';
 // Interfaces
 import { ICartProduct, IOrder, ShippingAddress } from '../../interfaces';
-// utils
-import { tesloApi } from '../../api';
 
 export interface CartState {
   cart: ICartProduct[];
@@ -188,7 +190,11 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     dispatch({ type: '[CART] - Update Address', payload: address });
   };
 
-  const createOrder = async () => {
+  /**
+   * It creates an order
+   * @returns {} { hasError, message } An object with two properties: hasError and message. message puede ser un mensaje de error o, si todo sale bien, es el id de la orden.
+   */
+  const createOrder = async ():Promise<{hasError: boolean; message: string}> => {
     if (!state.shippingAddress) {
       throw new Error('No hay dirección de Entrega');
     }
@@ -205,10 +211,25 @@ export const CartProvider: React.FC<Props> = ({ children }) => {
     };
 
     try {
-      const { data } = await tesloApi.post('/orders', body);
-      console.log({ data });
+      const { data } = await tesloApi.post<IOrder>('/orders', body);
+      // todo: dispatch
+
+      return {
+        hasError: false,
+        message: data._id!,
+      }
     } catch (error) {
-      console.log('Error en createOrder:', error);
+      if (axios.isAxiosError(error)) {
+        return {
+          hasError: true,
+          message: error.response?.data.message,
+        }
+      }
+
+      return {
+        hasError: true,
+        message: 'Error no controlado, hable con el administrador',
+      }
     }
   };
 
