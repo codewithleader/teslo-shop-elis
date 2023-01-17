@@ -1,16 +1,19 @@
 // ? AQUÍ VAN TODOS LOS PRIVIDERS
-import '../styles/globals.css';
+// next
 import type { AppProps } from 'next/app';
-
-// import { CssBaseline, ThemeProvider } from '@mui/material'; // No usar asi porque es mas lento en dev.
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material';
-
-import { SWRConfig } from 'swr';
-
-import { lightTheme } from '../themes';
-import { AuthProvider, CartProvider, UiProvider } from '../context';
+// next-auth
 import { SessionProvider } from 'next-auth/react';
+//mui
+import CssBaseline from '@mui/material/CssBaseline';
+// theme
+import { ThemeProvider } from '@mui/material';
+import { lightTheme } from '../themes';
+// css
+import '../styles/globals.css';
+// swr
+import { SWRConfig } from 'swr';
+// context providers
+import { AuthProvider, CartProvider, UiProvider } from '../context';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
