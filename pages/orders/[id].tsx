@@ -14,7 +14,7 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-// import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined'; // todo si se usará cuando muestre que la orden no ha sido pagada.
+import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined';
 import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
 // Custom Components
 import { ShopLayout } from '../../components/layouts';
@@ -26,76 +26,86 @@ interface Props {
 }
 
 export const OrderPage: NextPage<Props> = ({ order }) => {
-  console.log({ order });
+  const { shippingAddress } = order;
 
   return (
-    <ShopLayout title={'Order Summary ABC123123123'} pageDescription={'Order Summary'}>
+    <ShopLayout title='Order Summary' pageDescription='Order Summary'>
       <Typography variant='h1' component='h1'>
-        Order: ABC123123123
+        Order: {order._id}
       </Typography>
 
-      {/* <Chip
-        sx={{ my: 2 }}
-        label='Pending payment'
-        variant='outlined'
-        color='error'
-        icon={<CreditCardOffOutlinedIcon />}
-      /> */}
-
-      <Chip
-        sx={{ my: 2 }}
-        label='order has already been paid'
-        variant='outlined'
-        color='success'
-        icon={<CreditScoreOutlinedIcon />}
-      />
+      {order.isPaid ? (
+        <Chip
+          sx={{ my: 2 }}
+          label='order has already been paid'
+          variant='outlined'
+          color='success'
+          icon={<CreditScoreOutlinedIcon />}
+        />
+      ) : (
+        <Chip
+          sx={{ my: 2 }}
+          label='Pending payment'
+          variant='outlined'
+          color='error'
+          icon={<CreditCardOffOutlinedIcon />}
+        />
+      )}
 
       <Grid container sx={{ p: 1 }}>
         <Grid item xs={12} md={7}>
-          <CartList />
+          <CartList products={order.orderItems} />
         </Grid>
 
         <Grid item xs={12} md={5}>
           <Card className='summary-card' sx={{ p: 2 }}>
             <CardContent>
-              <Typography variant='h2'>Review (3 products)</Typography>
+              <Typography variant='h2'>
+                Review ({order.numberOfItems} {order.numberOfItems > 1 ? 'products' : 'product'})
+              </Typography>
 
               <Divider sx={{ my: 1 }} />
 
               <Box display='flex' justifyContent={'space-between'}>
                 <Typography variant='subtitle1'>Shipping Address</Typography>
-                <NextLink href={'/checkout/address'} passHref legacyBehavior>
-                  <Link underline='always'>Edit</Link>
-                </NextLink>
               </Box>
 
-              <Typography>Elis Antonio Perez</Typography>
-              <Typography>123 Main St</Typography>
-              <Typography>Stittsville, HLB 234</Typography>
-              <Typography>Israel</Typography>
-              <Typography>+1 555 5555</Typography>
+              <Typography>
+                {shippingAddress.firstName} {shippingAddress.lastName}
+              </Typography>
+              <Typography>
+                {shippingAddress.address}{' '}
+                {shippingAddress.address2 ? `, ${shippingAddress.address2}` : ''}
+              </Typography>
+              <Typography>
+                {shippingAddress.city}, {shippingAddress.zip}
+              </Typography>
+              <Typography>{shippingAddress.country}</Typography>
+              <Typography>{shippingAddress.phone}</Typography>
 
               <Divider sx={{ my: 1 }} />
 
-              <Box display='flex' justifyContent={'end'}>
-                <NextLink href={'/cart'} passHref legacyBehavior>
-                  <Link underline='always'>Edit</Link>
-                </NextLink>
-              </Box>
+              <OrderSummary
+                orderValues={{
+                  numberOfItems: order.numberOfItems,
+                  subTotal: order.subTotal,
+                  tax: order.tax,
+                  total: order.total,
+                }}
+              />
 
-              <OrderSummary />
-
-              <Box sx={{ mt: 3 }}>
-                {/* TODO: */}
-                <h1>Pay</h1>
-
-                <Chip
-                  sx={{ my: 2 }}
-                  label='order has already been paid'
-                  variant='outlined'
-                  color='success'
-                  icon={<CreditScoreOutlinedIcon />}
-                />
+              <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
+                {order.isPaid ? (
+                  <Chip
+                    sx={{ my: 2 }}
+                    label='order has already been paid'
+                    variant='outlined'
+                    color='success'
+                    icon={<CreditScoreOutlinedIcon />}
+                  />
+                ) : (
+                  <h1>Pay</h1>
+                )}
               </Box>
             </CardContent>
           </Card>

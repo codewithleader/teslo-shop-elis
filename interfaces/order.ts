@@ -20,7 +20,7 @@ export interface IOrder {
   updatedAt?: string;
 }
 
-interface IOrderItem {
+export interface IOrderItem {
   _id: string;
   size: ISize;
   slug: string;
