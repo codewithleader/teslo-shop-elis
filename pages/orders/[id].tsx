@@ -1,8 +1,12 @@
 // NextJS
+import { GetServerSideProps, NextPage } from 'next';
 import NextLink from 'next/link';
+// next-auth
+import { getSession } from 'next-auth/react';
+// database
+import { dbOrders } from '../../database';
 // mui
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
@@ -10,13 +14,20 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined';
+// import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined'; // todo si se usará cuando muestre que la orden no ha sido pagada.
 import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
 // Custom Components
 import { ShopLayout } from '../../components/layouts';
 import { CartList, OrderSummary } from '../../components/cart';
+import { IOrder } from '../../interfaces';
 
-export const OrderPage = () => {
+interface Props {
+  order: IOrder;
+}
+
+export const OrderPage: NextPage<Props> = ({ order }) => {
+  console.log({ order });
+
   return (
     <ShopLayout title={'Order Summary ABC123123123'} pageDescription={'Order Summary'}>
       <Typography variant='h1' component='h1'>
@@ -92,6 +103,49 @@ export const OrderPage = () => {
       </Grid>
     </ShopLayout>
   );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+  const { id = '' } = query;
+  const session: any = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: `/auth/login?page=/orders/${id}`,
+        permanent: false,
+      },
+    };
+  }
+
+  const order = await dbOrders.getOrderById(id.toString());
+
+  if (!order) {
+    return {
+      redirect: {
+        destination: '/orders/history',
+        permanent: false,
+      },
+    };
+  }
+
+  // Si el usuario quiere ver la orden de otro usuario se redirecciona
+  if (order.user !== session.user._id) {
+    return {
+      redirect: {
+        destination: '/orders/history',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      order,
+    },
+  };
 };
 
 export default OrderPage;

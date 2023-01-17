@@ -146,6 +146,7 @@ export const RegisterPage = () => {
               <NextLink
                 href={router.query.page ? `/auth/login?page=${router.query.page}` : '/auth/login'}
                 passHref
+                legacyBehavior
               >
                 <Link underline='always'>Sing In</Link>
               </NextLink>

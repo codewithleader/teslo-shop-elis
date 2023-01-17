@@ -123,6 +123,7 @@ export const LoginPage = () => {
                   router.query.page ? `/auth/register?page=${router.query.page}` : '/auth/register'
                 }
                 passHref
+                legacyBehavior
               >
                 <Link underline='always'>Create Account</Link>
               </NextLink>
