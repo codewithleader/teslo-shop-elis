@@ -52,7 +52,7 @@ export const OrderPage: NextPage<Props> = ({ order }) => {
         />
       )}
 
-      <Grid container sx={{ p: 1 }}>
+      <Grid container className='fadeIn' sx={{ p: 1 }}>
         <Grid item xs={12} md={7}>
           <CartList products={order.orderItems} />
         </Grid>

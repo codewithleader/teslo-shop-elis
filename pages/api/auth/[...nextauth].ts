@@ -44,14 +44,14 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, account, user }) {
       if (account) {
-        token.accessToken = account.access_token;
+        token.accessToken = account.access_token || '';
         switch (account.type) {
           case 'oauth':
             token.user = await dbUsers.oAuthToDbUser(user?.email || '', user?.name || '');
             break;
 
           case 'credentials':
-            token.user = user;
+            token.user = user!;
             break;
         }
       }
