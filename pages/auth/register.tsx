@@ -77,7 +77,7 @@ export const RegisterPage = () => {
                 Create Account
               </Typography>
               <Chip
-                label='Registered User'
+                label={errorMessage}
                 color='error'
                 icon={<ErrorOutline />}
                 className='fadeIn'

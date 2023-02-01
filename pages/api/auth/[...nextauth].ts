@@ -14,7 +14,7 @@ export default NextAuth({
         password: { label: 'Password:', type: 'password', placeholder: 'Password' },
       },
       async authorize(credentials) {
-        console.log({ credentials });
+        console.log('credentials:', { credentials });
         // TODO: validar contra database.
         // return { email: 'juan@juan.com', id: '124563' };
 
