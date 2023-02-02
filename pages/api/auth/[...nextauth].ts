@@ -18,7 +18,10 @@ export default NextAuth({
         // console.log('credentials:', { credentials });
         // return { email: 'juan@juan.com', id: '124563' };
 
-        return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password) as User;
+        return (await dbUsers.checkUserEmailPassword(
+          credentials!.email,
+          credentials!.password
+        )) as User;
       },
     }),
     GithubProvider({
@@ -43,6 +46,9 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, account, user }) {
+      // console.log('token:', { token });
+      // console.log('account:', { account });
+      // console.log('user:', { user });
       if (account) {
         token.accessToken = account.access_token || '';
         switch (account.type) {
@@ -58,11 +64,14 @@ export default NextAuth({
 
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
+      // console.log('session:', { session });
+      // console.log('token:', { token });
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
       session.user = token.user as IUser;
 
+      // console.log('session: After', { session });
       return session;
     },
   },
