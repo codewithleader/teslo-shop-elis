@@ -1,32 +1,62 @@
 // NextJS
 import { GetServerSideProps, NextPage } from 'next';
-import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 // next-auth
 import { getSession } from 'next-auth/react';
 // database
 import { dbOrders } from '../../database';
+// Paypal buttons
+import { PayPalButtons } from '@paypal/react-paypal-js';
 // mui
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
+import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined';
+import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
 import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
+import CreditCardOffOutlinedIcon from '@mui/icons-material/CreditCardOffOutlined';
 // Custom Components
 import { ShopLayout } from '../../components/layouts';
 import { CartList, OrderSummary } from '../../components/cart';
+// Interfaces
 import { IOrder } from '../../interfaces';
+// api
+import { tesloApi } from '../../api';
 
 interface Props {
   order: IOrder;
 }
 
+export type OrderResponseBody = {
+  id: string;
+  status: 'COMPLETED' | 'SAVED' | 'APPROVED' | 'VOIDED' | 'PAYER_ACTION_REQUIRED';
+};
+
 export const OrderPage: NextPage<Props> = ({ order }) => {
+  const router = useRouter();
+
   const { shippingAddress } = order;
+
+  const onOrderCompleted = async (details: OrderResponseBody) => {
+    if (details.status !== 'COMPLETED') {
+      return alert('No hay pago en PayPal');
+    }
+
+    try {
+      const { data } = await tesloApi.post(`/orders/pay`, {
+        transactionId: details.id,
+        orderId: order._id,
+      });
+
+      router.reload();
+    } catch (error) {
+      console.log('Error desde frontend - orders/[id].tsx:', error);
+      alert('Error');
+    }
+  };
 
   return (
     <ShopLayout title='Order Summary' pageDescription='Order Summary'>
@@ -95,6 +125,10 @@ export const OrderPage: NextPage<Props> = ({ order }) => {
               />
 
               <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
+                {/* todo */}
+                <Box display='flex' justifyContent='center' className='fadeIn'>
+                  <CircularProgress />
+                </Box>
                 {order.isPaid ? (
                   <Chip
                     sx={{ my: 2 }}
@@ -104,7 +138,23 @@ export const OrderPage: NextPage<Props> = ({ order }) => {
                     icon={<CreditScoreOutlinedIcon />}
                   />
                 ) : (
-                  <h1>Pay</h1>
+                  <PayPalButtons
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: `${order.total}`,
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={async (data, actions) => {
+                      const details = await actions.order!.capture();
+                      onOrderCompleted(details);
+                    }}
+                  />
                 )}
               </Box>
             </CardContent>

@@ -21,9 +21,9 @@ const orderSchema = new Schema(
       phone: { type: String, required: true },
       address: { type: String, required: true },
       country: { type: String, required: true },
+      address2: { type: String },
       lastName: { type: String, required: true },
       firstName: { type: String, required: true },
-      address2: { type: String },
     },
     tax: { type: Number, required: true },
     total: { type: Number, required: true },
@@ -32,6 +32,7 @@ const orderSchema = new Schema(
     subTotal: { type: Number, required: true },
     numberOfItems: { type: Number, required: true },
     paymentResult: { type: String },
+    transactionId: { type: String },
   },
   {
     timestamps: true,
