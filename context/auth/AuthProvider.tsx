@@ -77,6 +77,26 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
+  // Todo: USAR ESTA SI EL PROFE FERNANDO DICE QUE SI (Nota: Isaías dijo que no, pero ya estoy entendiendo. Estos hooks lo que hacen es que mantienen las funciones guardadas en la caché y si saturamos la caché (agotamos la memoria caché) entonces nuestra app sería mas lenta)
+  // const loginUser = useCallback(async (email: string, password: string): Promise<boolean> => {
+  //   try {
+  //     const { data } = await tesloApi.post('/user/login', {
+  //       email,
+  //       password,
+  //     });
+
+  //     const { token, user } = data;
+
+  //     // Save to Cookies
+  //     Cookies.set('token', token);
+  //     dispatch({ type: '[AUTH] - Login', payload: user });
+
+  //     return true;
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // }, []);
+
   const registerUser = async (
     name: string,
     email: string,

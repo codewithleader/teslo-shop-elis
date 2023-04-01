@@ -1,8 +1,8 @@
-import NextAuth from 'next-auth';
-import { JWT } from 'next-auth/jwt';
+// import NextAuth from 'next-auth';
+// import { JWT } from 'next-auth/jwt';
 import { IUser } from '../interfaces';
 
-import { JWTResponse } from './jwt';
+// import { JWTResponse } from './jwt';
 
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
@@ -26,6 +26,7 @@ declare module 'next-auth' {
     createdAt?: string;
     updatedAt?: string;
   }
+
   interface Session {
     user: IUser;
     accessToken: string;

@@ -1,3 +1,5 @@
+// css
+import '../styles/globals.css';
 // ? AQUÍ VAN TODOS LOS PRIVIDERS
 // next
 import type { AppProps } from 'next/app';
@@ -12,8 +14,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 // theme
 import { ThemeProvider } from '@mui/material';
 import { lightTheme } from '../themes';
-// css
-import '../styles/globals.css';
 // swr
 import { SWRConfig } from 'swr';
 

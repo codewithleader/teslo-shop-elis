@@ -1,7 +1,7 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeOptions } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
-export const lightTheme = createTheme({
+const themeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
@@ -12,7 +12,7 @@ export const lightTheme = createTheme({
     },
     info: {
       main: '#fff',
-    }
+    },
   },
   components: {
     MuiLink: {
@@ -55,7 +55,7 @@ export const lightTheme = createTheme({
         variant: 'contained',
         size: 'small',
         disableElevation: true,
-        color: 'info'
+        color: 'info',
       },
       styleOverrides: {
         root: {
@@ -82,4 +82,6 @@ export const lightTheme = createTheme({
       },
     },
   },
-});
+};
+
+export const lightTheme = createTheme(themeOptions);

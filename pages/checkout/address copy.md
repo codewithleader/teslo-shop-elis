@@ -9,8 +9,7 @@ import { useForm } from 'react-hook-form';
 // Context
 import { CartContext } from '../../context';
 // utils
-import { countries } from 'assets/data/countries';
-// import { countries } from '../../utils';
+import { countries } from '../../utils';
 // mui
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -21,7 +20,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 // Custom Components
 import { ShopLayout } from '../../components/layouts';
-import FormProvider, { RHFSelect } from '../../components/hook-form';
 
 type FormData = {
   firstName: string;
@@ -52,7 +50,12 @@ export const AddressPage = () => {
   const router = useRouter();
   const { updateAddress } = useContext(CartContext);
 
-  const methods = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -60,22 +63,17 @@ export const AddressPage = () => {
       address2: '',
       zip: '',
       city: '',
-      country: countries[0].label,
+      country: countries[0].code,
       phone: '',
     },
   });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = methods;
 
   useEffect(() => {
     reset(getAddressFromCookies());
   }, [reset]);
 
+  // const { country:pais } = getValues();
+  // console.log({ country });
 
   const onSubmitAddress = (data: FormData) => {
     // console.log(data);
@@ -84,7 +82,7 @@ export const AddressPage = () => {
   };
   return (
     <ShopLayout title={'Shipping'} pageDescription={'Confirm destination address'}>
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmitAddress)}>
+      <form onSubmit={handleSubmit(onSubmitAddress)}>
         <Typography variant='h1' component='h1'>
           Address
         </Typography>
@@ -165,14 +163,26 @@ export const AddressPage = () => {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <RHFSelect native name='country' label='Country' placeholder='Country'>
-              <option value='' />
-              {countries.map(country => (
-                <option key={country.code} value={country.label}>
-                  {country.label}
-                </option>
-              ))}
-            </RHFSelect>
+            {/* <FormControl fullWidth> */}
+              <TextField
+                // select
+                label='Country'
+                variant='filled'
+                fullWidth
+                // defaultValue={Cookies.get('country') || countries[0].code}
+                {...register('country', {
+                  required: 'This field is required',
+                })}
+                error={!!errors.country}
+                helperText={errors.country?.message}
+              />
+                {/* {countries.map(country => (
+                  <MenuItem key={country.code} value={country.code}>
+                    {country.name}
+                  </MenuItem>
+                ))}
+              </TextField> */}
+            {/* </FormControl> */}
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -194,7 +204,7 @@ export const AddressPage = () => {
             Review Order
           </Button>
         </Box>
-      </FormProvider>
+      </form>
     </ShopLayout>
   );
 };
