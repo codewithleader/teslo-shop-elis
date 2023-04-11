@@ -32,3 +32,6 @@ mongodb://localhost:27017/teslodb
 ### Set the environment variables.
 
 Rename **.env.template** to **.env** and enter the corresponding values.
+
+# Paypal
+- Currency CODES: [https://developer.paypal.com/reference/currency-codes/](https://developer.paypal.com/reference/currency-codes/)

@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 // next-auth
 import { getSession } from 'next-auth/react';
+// lodash
+import { round } from 'lodash';
 // mongoDB
 import { db } from '../../../database';
 // interfaces
@@ -60,7 +62,8 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     // todo bien hasta este punto
     const userId = session.user._id;
     const newOrder = new OrderModel({ ...req.body, isPaid: false, user: userId });
-    newOrder.total = Math.round(newOrder.total * 100) / 100; // reduce a 2 decimales
+    newOrder.total = round(newOrder.total, 2); // con lodash
+    // newOrder.total = Math.round(newOrder.total * 100) / 100; // reduce a 2 decimales
     // console.log('total:', newOrder.total);
     await newOrder.save();
     await db.disconnect();

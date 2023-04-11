@@ -61,7 +61,7 @@ export const OrderPage: NextPage<Props> = ({ order }) => {
     } catch (error) {
       setIsPaying(false);
       console.log('Error desde frontend - orders/[id].tsx:', error);
-      alert('Error');
+      alert(`Error: ${error}`);
     }
   };
 
@@ -156,6 +156,15 @@ export const OrderPage: NextPage<Props> = ({ order }) => {
                         return actions.order.create({
                           purchase_units: [
                             {
+                              // items: order.orderItems.map(item => ({
+                              //   name: item.title,
+                              //   unit_amount: {
+                              //     value: item.price.toString(),
+                              //     currency_code: 'USD' // For more README.md
+                              //   },
+                              //   quantity: item.quantity.toString(),
+                              //   description: item.title,
+                              // })),
                               amount: {
                                 value: `${order.total}`,
                               },
@@ -165,6 +174,7 @@ export const OrderPage: NextPage<Props> = ({ order }) => {
                       }}
                       onApprove={async (data, actions) => {
                         const details = await actions.order!.capture();
+                        // la respuesta (details) de Paypal se la enviamos al backend:
                         onOrderCompleted(details);
                       }}
                     />

@@ -91,6 +91,8 @@ const payOrder = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await dbOrder.save();
 
+  // todo: En este punto se le puede enviar un email al usuario indicando su compra exitosa
+
   db.disconnect();
 
   return res.status(200).json({ message: 'Orden pagada' });
