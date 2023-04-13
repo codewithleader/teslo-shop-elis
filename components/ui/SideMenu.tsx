@@ -16,16 +16,17 @@ import ListSubheader from '@mui/material/ListSubheader';
 import InputAdornment from '@mui/material/InputAdornment';
 import ListItemButton from '@mui/material/ListItemButton';
 // Icons
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
-import EscalatorWarningOutlinedIcon from '@mui/icons-material/EscalatorWarningOutlined';
-import FemaleOutlinedIcon from '@mui/icons-material/FemaleOutlined';
 import MaleOutlinedIcon from '@mui/icons-material/MaleOutlined';
+import DashboardOutlined from '@mui/icons-material/DashboardOutlined';
+import FemaleOutlinedIcon from '@mui/icons-material/FemaleOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import EscalatorWarningOutlinedIcon from '@mui/icons-material/EscalatorWarningOutlined';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
 // context
 import { AuthContext, UiContext } from '../../context';
 
@@ -147,12 +148,23 @@ export const SideMenu = () => {
               <Divider />
               <ListSubheader>Admin Panel</ListSubheader>
 
+              <ListItemButton
+                //
+                onClick={() => navigateTo('/admin')}
+              >
+                <ListItemIcon>
+                  <DashboardOutlined />
+                </ListItemIcon>
+                <ListItemText primary={'Dashboard'} />
+              </ListItemButton>
+
               <ListItemButton>
                 <ListItemIcon>
                   <CategoryOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary={'Products'} />
               </ListItemButton>
+
               <ListItemButton>
                 <ListItemIcon>
                   <ConfirmationNumberOutlinedIcon />
