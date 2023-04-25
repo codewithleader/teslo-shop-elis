@@ -12,7 +12,7 @@ import {
   DataGrid,
   GridColDef,
   GridRenderCellParams,
-  // GridValueGetterParams,
+  // GridValueGetterParams, // ya no se usa esta sinó "GridRenderCellParams"
 } from '@mui/x-data-grid';
 // types
 import { IUser } from 'interfaces';
