@@ -66,7 +66,7 @@ interface Props {
 }
 
 export const HistoryPage: NextPage<Props> = ({ orders }) => {
-  const row = orders.map((order, index) => ({
+  const rows = orders.map((order, index) => ({
     id: index + 1,
     paid: order.isPaid,
     fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
@@ -81,7 +81,7 @@ export const HistoryPage: NextPage<Props> = ({ orders }) => {
 
       <Grid container className='fadeIn'>
         <Grid item xs={12} sx={{ height: 650, width: '100%' }}>
-          <DataGrid columns={columns} rows={row} pageSize={10} rowsPerPageOptions={[10]} />
+          <DataGrid columns={columns} rows={rows} pageSize={10} rowsPerPageOptions={[10]} />
         </Grid>
       </Grid>
     </ShopLayout>
