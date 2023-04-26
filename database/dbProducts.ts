@@ -13,6 +13,8 @@ export const getProductBySlug = async (slug: string): Promise<IProduct | null> =
     return null;
   }
 
+  // todo: procesamiento de imagenes cuando la subamos al server
+
   /* Converting the Mongoose document to a plain JavaScript object. (Serialized) */
   return JSON.parse(JSON.stringify(product));
 };
