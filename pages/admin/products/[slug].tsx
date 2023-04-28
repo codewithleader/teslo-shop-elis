@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 // React-Hook-Form
 import { useForm } from 'react-hook-form';
@@ -55,10 +55,12 @@ interface Props {
 }
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
+  const [newTagValue, setNewTagValue] = useState('');
+
   const {
     getValues,
     setValue,
-    // watch,
+    watch, // para suscripciones
     register,
     handleSubmit,
     formState: { errors },
@@ -66,10 +68,49 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     defaultValues: product,
   });
 
-  // console.log(getValues('description'))
-  // console.log(watch())
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name === 'title') {
+        const newSlug =
+          value.title?.trim().replaceAll(' ', '_').replaceAll("'", '').toLowerCase() || '';
 
-  const onDeleteTag = (tag: string) => {};
+        setValue('slug', newSlug);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [setValue, watch]);
+
+  const onChangeSize = (size: string) => {
+    const currentSizes = getValues('sizes');
+
+    if (currentSizes.includes(size)) {
+      return setValue(
+        'sizes',
+        currentSizes.filter(s => s !== size),
+        { shouldValidate: true }
+      );
+    }
+
+    setValue('sizes', [...currentSizes, size], { shouldValidate: true });
+  };
+
+  const onNewTag = () => {
+    const newTag = newTagValue.trim().toLowerCase();
+    setNewTagValue('');
+    const currentTags = getValues('tags');
+
+    if (currentTags.includes(newTag)) return;
+
+    currentTags.push(newTag);
+
+    // setValue('tags', currentTags); // No es necesario porque en Javascript todos los objetos pasan por referencia. El .push mutó el estado del objeto.
+  };
+
+  const onDeleteTag = (tag: string) => {
+    const updatedTags = getValues('tags').filter(t => t !== tag);
+    setValue('tags', updatedTags, { shouldValidate: true });
+  };
 
   const onSubmit = (form: FormData) => {
     console.log({ form });
@@ -114,8 +155,8 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               variant='filled'
               fullWidth
               multiline
+              rows={5} // Solución al problema de re-renders, si vuelve a salir agregar mas rows (6 ó 7)
               sx={{ mb: 1 }}
-              // TODO: Error de re-renders al agregar el register
               {...register('description', {
                 required: 'Este campo es requerido',
               })}
@@ -192,7 +233,13 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
             <FormGroup>
               <FormLabel>Tallas</FormLabel>
               {validSizes.map(size => (
-                <FormControlLabel key={size} control={<Checkbox />} label={size} />
+                <FormControlLabel
+                  //
+                  key={size}
+                  control={<Checkbox checked={getValues('sizes').includes(size)} />}
+                  label={size}
+                  onChange={() => onChangeSize(size)}
+                />
               ))}
             </FormGroup>
           </Grid>
@@ -219,6 +266,9 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               fullWidth
               sx={{ mb: 1 }}
               helperText='Presiona [spacebar] para agregar'
+              value={newTagValue}
+              onChange={e => setNewTagValue(e.target.value)}
+              onKeyUp={({ code }) => (code === 'Space' ? onNewTag() : undefined)}
             />
 
             <Box
@@ -231,7 +281,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               }}
               component='ul'
             >
-              {product.tags.map(tag => {
+              {getValues('tags').map(tag => {
                 return (
                   <Chip
                     key={tag}
