@@ -2,7 +2,9 @@
 import { GetServerSideProps, NextPage } from 'next';
 import NextLink from 'next/link';
 // next-auth
-import { getSession } from 'next-auth/react';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth/next';
+// import { getSession } from 'next-auth/react';
 // mui
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
@@ -91,8 +93,10 @@ export const HistoryPage: NextPage<Props> = ({ orders }) => {
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session: any = await getSession({ req });
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  // const session: any = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions); // ? Nuevo cambio
+
 
   if (!session) {
     return {

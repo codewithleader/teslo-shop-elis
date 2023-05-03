@@ -1,10 +1,11 @@
 import NextAuth, { User } from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import Credentials from 'next-auth/providers/credentials';
 import { dbUsers } from '../../../database';
 import { IUser } from '../../../interfaces';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
     // El orden en que aparecen en la pagina /api/auth/signin será este order:
@@ -75,4 +76,6 @@ export default NextAuth({
       return session;
     },
   },
-});
+};
+
+export default NextAuth(authOptions);

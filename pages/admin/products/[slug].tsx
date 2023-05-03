@@ -376,7 +376,12 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                 onChange={onFilesSelected}
               />
 
-              <Chip label='Es necesario al 2 imagenes' color='error' variant='outlined' />
+              <Chip
+                label='Es necesario al menos 2 imagenes'
+                color='error'
+                variant='outlined'
+                sx={{ display: getValues('images').length < 2 ? 'flex' : 'none', mb: 2 }}
+              />
 
               <Grid container spacing={2}>
                 {getValues('images').map(img => (
@@ -385,7 +390,8 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                       <CardMedia
                         component='img'
                         className='fadeIn'
-                        image={img.startsWith('https') ? img : `/products/${img}`}
+                        image={img}
+                        // image={img.startsWith('https') ? img : `/products/${img}`}
                         alt={img}
                       />
                       <CardActions>

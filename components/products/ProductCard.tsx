@@ -24,7 +24,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const productImage = useMemo(() => {
     // ? (SOLUCIONADO - NO BORRAR) Aquí es donde está el problema. La imagen la está buscando en {{url}}/category/products/img.jpg y acá la está sirviendo en {{url}}/products/img.jpg (Solucionado pero no borrar para que quede el recordatorio)
     // ?: SOLUCION: Agregar el "/" antes de "products/" para indicar que se base en la raíz
-    return isHovered ? `/products/${product.images[1]}` : `/products/${product.images[0]}`;
+    // ACTUALIZACIÓN: Ya las imagenes tienen path completo "http...imageName.jpg"
+    return isHovered ? product.images[1] : product.images[0];
   }, [isHovered, product.images]);
 
   return (

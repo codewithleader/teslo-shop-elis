@@ -5,7 +5,13 @@ import { GetServerSideProps } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 // next-auth
-import { getProviders, getSession, signIn } from 'next-auth/react';
+import {
+  getProviders,
+  // getSession,
+  signIn,
+} from 'next-auth/react';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth/next';
 // Form
 import { useForm } from 'react-hook-form';
 // mui
@@ -133,7 +139,7 @@ export const LoginPage = () => {
               <Divider sx={{ width: '100%', mb: 2 }} />
               {Object.values(providers).map((provider: any) => {
                 if (provider.id === 'credentials') {
-                  return (<div key='credentials'></div>)
+                  return <div key='credentials'></div>;
                 }
                 return (
                   <Button
@@ -159,8 +165,9 @@ export const LoginPage = () => {
 // ?: Esto verifica si ya hay una session activa. Si la hay redirecciona. Si no hay entonces si permite el ingreso a la pagina de login
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
-export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
-  const session = await getSession({ req });
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+  // const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions); // ? Nuevo cambio
   const { page = '/' } = query;
 
   if (session) {

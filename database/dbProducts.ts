@@ -13,7 +13,10 @@ export const getProductBySlug = async (slug: string): Promise<IProduct | null> =
     return null;
   }
 
-  // todo: procesamiento de imagenes cuando la subamos al server
+  // procesamiento de imagenes cuando la subamos al server
+  product.images = product.images.map(image => {
+    return image.includes('http') ? image : `${process.env.HOST_NAME}/products/${image}`;
+  });
 
   /* Converting the Mongoose document to a plain JavaScript object. (Serialized) */
   return JSON.parse(JSON.stringify(product));
@@ -46,7 +49,16 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
 
   await db.disconnect();
 
-  return products;
+  const updatedProducts = products.map(product => {
+    // procesamiento de imagenes cuando la subamos al server
+    product.images = product.images.map(image => {
+      return image.includes('http') ? image : `${process.env.HOST_NAME}/products/${image}`;
+    });
+
+    return product;
+  });
+
+  return updatedProducts;
 };
 
 export const getAllProducts = async (): Promise<IProduct[]> => {
@@ -56,6 +68,15 @@ export const getAllProducts = async (): Promise<IProduct[]> => {
 
   await db.disconnect();
 
+  const updatedProducts = products.map(product => {
+    // procesamiento de imagenes cuando la subamos al server
+    product.images = product.images.map(image => {
+      return image.includes('http') ? image : `${process.env.HOST_NAME}/products/${image}`;
+    });
+
+    return product;
+  });
+
   /* Converting the Mongoose document to a plain JavaScript object. (Serialized) */
-  return JSON.parse(JSON.stringify(products));
+  return JSON.parse(JSON.stringify(updatedProducts));
 };

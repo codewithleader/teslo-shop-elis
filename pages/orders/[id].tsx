@@ -4,7 +4,9 @@ import { useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 // next-auth
-import { getSession } from 'next-auth/react';
+// import { getSession } from 'next-auth/react';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth/next';
 // database
 import { dbOrders } from '../../database';
 // Paypal buttons
@@ -34,7 +36,7 @@ interface Props {
 
 export type OrderResponseBody = {
   id: string;
-  status: 'COMPLETED' | 'SAVED' | 'APPROVED' | 'VOIDED' | 'PAYER_ACTION_REQUIRED';
+  status: 'CREATED' | 'SAVED' | 'APPROVED' | 'VOIDED' | 'COMPLETED' | 'PAYER_ACTION_REQUIRED';
 };
 
 export const OrderPage: NextPage<Props> = ({ order }) => {
@@ -191,9 +193,10 @@ export const OrderPage: NextPage<Props> = ({ order }) => {
 
 // You should use getServerSideProps when:
 // - Only if you need to pre-render a page whose data must be fetched at request time
-export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
   const { id = '' } = query;
-  const session: any = await getSession({ req });
+  // const session: any = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions); // ? Nuevo cambio
 
   if (!session) {
     return {

@@ -34,7 +34,7 @@ const columns: GridColDef[] = [
             component={'img'}
             className='fadeIn'
             alt={row.title}
-            image={`/products/${row.img}`}
+            image={row.img}
           />
         </a>
       );
@@ -88,10 +88,10 @@ export const ProductsPage = () => {
     >
       <Box display='flex' justifyContent='end' sx={{ mb: 2 }}>
         <Button
-        //
-        startIcon={<AddOutlined />}
-        color='secondary'
-        href='/admin/products/new'
+          //
+          startIcon={<AddOutlined />}
+          color='secondary'
+          href='/admin/products/new'
         >
           Crear Producto
         </Button>

@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 // next-auth
-import { getSession } from 'next-auth/react';
+import { authOptions } from 'pages/api/auth/[...nextauth]'
+import { getServerSession } from "next-auth/next"
+// import { getSession } from 'next-auth/react';
 // lodash
 import { round } from 'lodash';
 // mongoDB
@@ -28,7 +30,9 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { orderItems, total } = req.body as IOrder;
 
   // Verificar que tengamos un usuario
-  const session: any = await getSession({ req }); // { expires: string, user: IUser } - Al mandar la request (req) van las cookies y se sabrá si hay un user 😱
+  // const session: any = await getSession({ req }); // { expires: string, user: IUser } - Al mandar la request (req) van las cookies y se sabrá si hay un user 😱
+
+  const session = await getServerSession(req, res, authOptions); // ? Nuevo cambio
 
   if (!session) {
     return res.status(401).json({ message: 'Debe estar autenticado para hacer esto' });
