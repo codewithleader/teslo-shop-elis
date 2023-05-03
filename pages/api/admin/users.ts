@@ -23,7 +23,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   }
 }
 
-const getUsers = async (req: NextApiRequest, res: NextApiResponse) => {
+const getUsers = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   await db.connect();
 
   const users = await UserModel.find().select('-password').lean();

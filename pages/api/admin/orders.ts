@@ -19,7 +19,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   }
 }
 
-const getOrders = async (req: NextApiRequest, res: NextApiResponse) => {
+const getOrders = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   await db.connect();
 
   const orders = await OrderModel.find()

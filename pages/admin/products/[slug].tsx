@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 // React-Hook-Form
 import { useForm } from 'react-hook-form';
 // mui icons
@@ -22,8 +23,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
-import ListItem from '@mui/material/ListItem';
-import Paper from '@mui/material/Paper';
+// import ListItem from '@mui/material/ListItem';
+// import Paper from '@mui/material/Paper';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import TextField from '@mui/material/TextField';
@@ -31,6 +32,8 @@ import TextField from '@mui/material/TextField';
 import { AdminLayout } from '../../../components/layouts';
 // types
 import { IProduct } from '../../../interfaces';
+import { tesloApi } from 'api';
+import { ProductModel } from 'models';
 
 const validTypes = ['shirts', 'pants', 'hoodies', 'hats'];
 const validGender = ['men', 'women', 'kid', 'unisex'];
@@ -55,7 +58,12 @@ interface Props {
 }
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
+  const router = useRouter();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [newTagValue, setNewTagValue] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   const {
     getValues,
@@ -112,8 +120,47 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     setValue('tags', updatedTags, { shouldValidate: true });
   };
 
-  const onSubmit = (form: FormData) => {
-    console.log({ form });
+  const onFilesSelected = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || event.target.files.length === 0) return;
+
+    try {
+      for (const file of event.target.files) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const { data } = await tesloApi.post<{ message: string }>('/admin/upload', formData);
+        console.log({ data });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onSubmit = async (form: FormData) => {
+    if (form.images.length < 2) return alert('Mínimo 2 imagenes');
+
+    setIsSaving(true);
+
+    try {
+      const { data } = await tesloApi({
+        url: '/admin/products',
+        method: form._id ? 'PUT' : 'POST', // todo: si tenemos _id actualizar y sinó entonces crear.
+        data: form,
+      });
+
+      console.log({ data });
+
+      if (!form._id) {
+        // todo: recargar el navegador
+        router.replace(`/admin/products/${form.slug}`);
+        setIsSaving(false);
+      } else {
+        setIsSaving(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -129,6 +176,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
             startIcon={<SaveOutlined />}
             sx={{ width: '150px' }}
             type='submit'
+            disabled={isSaving}
           >
             Guardar
           </Button>
@@ -299,9 +347,25 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 
             <Box display='flex' flexDirection='column'>
               <FormLabel sx={{ mb: 1 }}>Imágenes</FormLabel>
-              <Button color='secondary' fullWidth startIcon={<UploadOutlined />} sx={{ mb: 3 }}>
+              <Button
+                //
+                color='secondary'
+                fullWidth
+                startIcon={<UploadOutlined />}
+                sx={{ mb: 3 }}
+                onClick={() => fileInputRef.current?.click()}
+              >
                 Cargar imagen
               </Button>
+              <input
+                //
+                ref={fileInputRef}
+                type='file'
+                multiple
+                accept='image/png, image/gif, image/jpg, image/jpeg'
+                style={{ display: 'none' }}
+                onChange={onFilesSelected}
+              />
 
               <Chip label='Es necesario al 2 imagenes' color='error' variant='outlined' />
 
@@ -338,7 +402,18 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = '' } = query;
 
-  const product = await dbProducts.getProductBySlug(slug.toString());
+  let product: IProduct | null;
+
+  if (slug === 'new') {
+    // Crear un producto
+    const temProduct = JSON.parse(JSON.stringify(new ProductModel()));
+    delete temProduct._id;
+    temProduct.images = ['img1.jpg', 'img2.jpg'];
+
+    product = temProduct;
+  } else {
+    product = await dbProducts.getProductBySlug(slug.toString());
+  }
 
   if (!product) {
     return {
