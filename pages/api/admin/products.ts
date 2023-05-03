@@ -3,6 +3,9 @@ import { IProduct } from 'interfaces';
 import { db } from 'database';
 import { ProductModel } from 'models';
 import { isValidObjectId } from 'mongoose';
+// Cloudinary
+import { v2 as cloudinary } from 'cloudinary';
+cloudinary.config(process.env.CLOUDINARY_URL || '');
 
 type Data =
   | {
@@ -100,6 +103,21 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
     }
 
     // todo: Eliminar fotos en Cloudinary
+    // https://res.cloudinary.com/efradariok/image/upload/v1683126127/xvunkabfburm6v3ra5n4.jpg
+
+    product.images.forEach(async image => {
+      if (!images.includes(image)) {
+        // Obtener el nombre de la foto que es el requisito para eliminar en cloudinary
+        const [fileId, extension] = image
+          //
+          .substring(image.lastIndexOf('/') + 1)
+          .split('.'); // [xvunkabfburm6v3ra5n4, jpg]
+        console.log({ image, fileId, extension });
+
+        // Eliminar de Cloudinary con el fileId
+        await cloudinary.uploader.destroy(fileId);
+      }
+    });
 
     await product.update(req.body);
 
