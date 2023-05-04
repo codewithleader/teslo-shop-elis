@@ -157,8 +157,6 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
         data: form,
       });
 
-      console.log({ data });
-
       if (!form._id) {
         // todo: recargar el navegador
         router.replace(`/admin/products/${form.slug}`);
