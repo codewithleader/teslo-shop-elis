@@ -426,7 +426,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     // Crear un producto
     const temProduct = JSON.parse(JSON.stringify(new ProductModel()));
     delete temProduct._id;
-    temProduct.images = ['img1.jpg', 'img2.jpg'];
+    temProduct.images = ['https://teslo-shop-elis.vercel.app/img/no-image1.jpg', 'https://teslo-shop-elis.vercel.app/img/no-image2.jpg'];
 
     product = temProduct;
   } else {
