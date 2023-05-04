@@ -10,3 +10,5 @@ export interface ICartProduct {
   gender: 'men' | 'women' | 'kid' | 'unisex';
   quantity: number;
 }
+
+export interface ElisPrueba {}
