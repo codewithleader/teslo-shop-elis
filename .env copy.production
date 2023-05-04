@@ -1,0 +1,41 @@
+# faltan estas:
+HOST_NAME=https://teslo-shop-elis.vercel.app
+NEXTAUTH_URL=https://teslo-shop-elis.vercel.app/api/auth
+
+# Back-End Environment
+MONGO_URL=mongodb+srv://user_calendar:5MlRlPyxjxLOYQyT@myclustercafe.vf4nc2b.mongodb.net/teslodb
+
+# Run command: openssl rand -base64 32
+JWT_SECRET_SEED=9d4dbde99c68dbb7685f02196a91346d
+# Authentications Providers:
+# GITHUB
+GITHUB_CLIENT_ID=9122b19f7ebb4588bde3
+GITHUB_CLIENT_SECRET=b93fda3d835d641ff47cffe731c5e4c9d326a223
+
+# Run command: openssl rand -base64 32
+NEXTAUTH_SECRET=51494c92e2207d136e499401f857fbf8
+
+# Front-End Environment using NEXT_PUBLIC_... (Variables Publicas)
+NEXT_PUBLIC_TAX_RATE=0.15
+
+# Paypal
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=ASXRlVgMsizncwHlsEveKyPAxIhUzORxbsQ9wd15UbCYxJO9KjMt4jG-vtDxFWhLkXEdyQJHiqXaElWL
+PAYPAL_SECRET=EN-rROksCn9EH8JnBkYIVfKLIKVdhKjbXgt_mKPO96UizGocqgpL6Z0jm17z9uHpdnGUFVCTKN16rUDT
+PAYPAL_OAUTH_URL=https://api-m.sandbox.paypal.com/v1/oauth2/token
+PAYPAL_ORDERS_URL=https://api.sandbox.paypal.com/v2/checkout/orders
+
+# BUYER_EMAIL=sb-s6a3d24968820@personal.example.com
+# BUYER_PASSWORD=M<DTj6$7
+# BUYER_VISA=4570003766777730
+# BUYER_PHONE=5727798684
+# BUYER_NAME=John
+# BUYER_LASTNAME=Doe
+# BUYER_ACCOUNT_ID=J7JB5F7V2846C
+
+# Cloudinary
+CLOUDINARY_URL=cloudinary://843435351471981:k2GsDE1NFu1QrSqchwALazDqipc@efradariok
+
+# MongoDB Atlas (Nota: Estas credenciales son de otro proyecto pero funciona para el ejercicio)
+# MONGODB_URI=mongodb+srv://user_calendar:5MlRlPyxjxLOYQyT@myclustercafe.vf4nc2b.mongodb.net/tesloshop
+# MONGO_USER=user_calendar
+# MONGO_PASSWORD=5MlRlPyxjxLOYQyT
