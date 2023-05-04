@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 // axios
 import axios from 'axios';
 // utils
-import { tesloApi } from '../../api';
+import { tesloApi } from '../../fetching';
 // context
 import { CartContext, cartReducer } from './';
 // Interfaces

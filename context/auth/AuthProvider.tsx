@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 // context
 import { AuthContext, authReducer } from './';
 // api
-import { tesloApi } from '../../api';
+import { tesloApi } from '../../fetching';
 // interfaces
 import { IUser } from '../../interfaces';
 

@@ -16,7 +16,7 @@ import {
 } from '@mui/x-data-grid';
 // types
 import { IUser } from 'interfaces';
-import { tesloApi } from 'api';
+import { tesloApi } from 'fetching';
 
 export const UsersPage = () => {
   const { data, error } = useSWR<IUser[]>('/api/admin/users');

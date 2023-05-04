@@ -32,7 +32,7 @@ import TextField from '@mui/material/TextField';
 import { AdminLayout } from '../../../components/layouts';
 // types
 import { IProduct } from '../../../interfaces';
-import { tesloApi } from 'api';
+import { tesloApi } from 'fetching';
 import { ProductModel } from 'models';
 
 const validTypes = ['shirts', 'pants', 'hoodies', 'hats'];

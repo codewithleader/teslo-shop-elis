@@ -28,7 +28,7 @@ import { CartList, OrderSummary } from '../../components/cart';
 // Interfaces
 import { IOrder } from '../../interfaces';
 // api
-import { tesloApi } from '../../api';
+import { tesloApi } from '../../fetching';
 
 interface Props {
   order: IOrder;
