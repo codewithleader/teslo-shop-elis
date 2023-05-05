@@ -34,4 +34,14 @@ mongodb://localhost:27017/teslodb
 Rename **.env.template** to **.env** and enter the corresponding values.
 
 # Paypal
+
 - Currency CODES: [https://developer.paypal.com/reference/currency-codes/](https://developer.paypal.com/reference/currency-codes/)
+
+# Notas
+
+Vercel redeploy sin cambios:
+
+```
+git commit --allow-empty -m "Tigger Vercel deploy"
+git push main
+```
